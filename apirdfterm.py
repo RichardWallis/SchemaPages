@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
 
 from __future__ import with_statement
@@ -329,15 +329,15 @@ class VTerm():
             wpre = name[:len(name) - len(val)]
         
         first = True
-        buf = io.StringIO()
+        buf = []
         for com in comments:
             if not first:
-                buf.write(" ")
+                buf.append(" ")
             else:
                 first = False
-            buf.write(com)
+            buf.append(com)
             #buf.write(Markdown.parse(com,wpre=wpre))
-        ret = buf.getvalue()
+        ret = ''.join(buf)
         if not len(ret):
             ret = "-"
         self.comment = ret
