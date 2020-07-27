@@ -14,7 +14,7 @@ import os
 import re
 import rdflib
 from rdflib import URIRef
-import StringIO
+from io import StringIO
 
 VOCABURI="https://schema.org/"
 CORELAYER = "core"
