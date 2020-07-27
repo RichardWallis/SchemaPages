@@ -329,7 +329,7 @@ class VTerm():
             wpre = name[:len(name) - len(val)]
         
         first = True
-        buf = StringIO.StringIO()
+        buf = StringIO()
         for com in comments:
             if not first:
                 buf.write(" ")
