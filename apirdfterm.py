@@ -14,7 +14,7 @@ import os
 import re
 import rdflib
 from rdflib import URIRef
-from io import StringIO
+import io
 
 VOCABURI="https://schema.org/"
 CORELAYER = "core"
@@ -329,7 +329,7 @@ class VTerm():
             wpre = name[:len(name) - len(val)]
         
         first = True
-        buf = StringIO()
+        buf = io.StringIO()
         for com in comments:
             if not first:
                 buf.write(" ")
