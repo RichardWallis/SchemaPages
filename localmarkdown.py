@@ -31,11 +31,11 @@ class MarkdownTool():
             return ""
         source = source.strip()
         source = source.replace("\\n","\n")
-    	try:
+        try:
             self.parselock.acquire()
             ret = self._md.convert(source)
-    	finally:
-    		self.parselock.release()
+        finally:
+            self.parselock.release()
         
         if not preservePara:
             #Remove wrapping <p> </p>\n that Markdown2 adds by default
