@@ -407,7 +407,6 @@ class SdoTermSource():
                 buf.append(" ")
             else:
                 first = False
-            buf.append(com)
             buf.append  (Markdown.parse(com,wpre=wpre))
         ret = ''.join(buf)
         if not len(ret):

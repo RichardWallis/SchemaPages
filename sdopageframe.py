@@ -16,7 +16,7 @@ print ("loaded %s triples" % len(termgraph))
 
 SdoTermSource.setQueryGraph(termgraph)
 
-term = SdoTermSource.getTerm("CompleteDataFeed")
+term = SdoTermSource.getTerm("Book")
 
 print("")
 print("TYPE: %s" % term.termType)
