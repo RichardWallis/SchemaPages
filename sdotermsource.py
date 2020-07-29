@@ -19,7 +19,7 @@ from sdoterm import *
 from localmarkdown import Markdown
 
 VOCABURI="https://schema.org/"
-CORELAYER = "core"
+CORE    = "core"
 TERMS={}
 TERMSLOCK = threading.Lock()
 SORTLOCK = threading.Lock()
@@ -46,7 +46,7 @@ class SdoTermSource():
         self.uri = uri
         self.id = uri2id(uri)
         self.label = label
-        self.layer = CORELAYER
+        self.layer = CORE
         if  layer:
             self.layer = layer
         self.category = cat
