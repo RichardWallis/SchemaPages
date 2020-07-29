@@ -27,31 +27,38 @@ class SdoTerm():
         self.id = Id
         self.label = label
         
-        self.acknowledgements = None
+        self.acknowledgements = []
+        self.breadcrumbs = []
         self.comment = None
-        self.comments = None
-        self.equivalents = None
-        self.examples = None
+        self.equivalents = []
+        self.examples = []
         self.pending = False
         self.retired = False
-        self.sources = None
-        self.subs = None
-        self.supers = None
+        self.sources = []
+        self.subs = []
+        self.supers = []
         self.supersededBy = None
-        self.supersedes = None
-        self.termStack = None
+        self.supersedes = []
+        self.termStack = []
         
 
 class SdoType(SdoTerm):
 
     def __init__(self,Id,uri,label):
         SdoTerm.__init__(self,SdoTerm.TYPE,Id,uri,label)
+        
+        self.properties = []
+        self.allProperties = []
+        self.expectedTypeFor = []
+        
     
     
 class SdoProperty(SdoTerm):
 
     def __init__(self,Id,uri,label):
         SdoTerm.__init__(self,SdoTerm.PROPERTY,Id,uri,label)
+        self.domainIncludes = []
+        self.rangeIncludes = []
     
     
 class SdoDataType(SdoTerm):
@@ -59,17 +66,27 @@ class SdoDataType(SdoTerm):
     def __init__(self,Id,uri,label):
         SdoTerm.__init__(self,SdoTerm.DATATYPE,Id,uri,label)
 
+        self.properties = []
+        self.allProperties = []
+        self.expectedTypeFor = []
+
 
 class SdoEnumeration(SdoTerm):
 
     def __init__(self,Id,uri,label):
         SdoTerm.__init__(self,SdoTerm.ENUMERATION,Id,uri,label)
 
+        self.properties = []
+        self.allProperties = []
+        self.expectedTypeFor = []
+        self.enumerationMembers = []
+
     
 class SdoEnumerationvalue(SdoTerm):
 
     def __init__(self,Id,uri,label):
         SdoTerm.__init__(self,SdoTerm.ENUMERATIONVALUE,Id,uri,label)
+        self.enumerationParent = None
 
     
 class SdoReference(SdoTerm):

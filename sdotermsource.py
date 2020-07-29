@@ -24,8 +24,9 @@ TERMSLOCK = threading.Lock()
 SORTLOCK = threading.Lock()
 RDFLIBLOCK = threading.Lock()
 
-DATATYPEURI = URIRef("http://schema.org/DataType")
-ENUMERATIONURI = URIRef("http://schema.org/Enumeration")
+DATATYPEURI = URIRef("https://schema.org/DataType")
+ENUMERATIONURI = URIRef("https://schema.org/Enumeration")
+THINGURI = URIRef("https://schema.org/Thing")
 class SdoTermSource():
     
     TYPE = "Class"
@@ -42,9 +43,7 @@ class SdoTermSource():
         #log.info('%s %s "%s" %s %s' % (uri,ttype,label, layer, cat))
         uri = str(uri)
         self.uri = uri
-        self.id = uri
-        if uri.startswith(VOCABURI):
-            self.id = uri[len(VOCABURI):]
+        self.id = uri2id(uri)
         self.label = label
         self.layer = CORELAYER
         if  layer:
@@ -61,6 +60,7 @@ class SdoTermSource():
         self.supers = None
         self.termStack = None
         self.subs = None
+        self.members = None
         self.props = None
         self.propUsedOn = None
         self.ranges = None
@@ -98,11 +98,13 @@ class SdoTermSource():
             self.ttype = SdoTerm.REFERENCE
             self.label = id
         else:
-            #log.info("checking parent %s" % ttype)
-            self.parent = SdoTermSource._getTerm(str(ttype))
+            log.info("checking parent %s" % ttype)
+            self.parent = SdoTermSource._getTerm(str(ttype),createReference=True)
+            log.info("Parent: type %s id %s" %(self.parent.termType,self.parent.id))
+            
             if self.parent.termType == SdoTerm.ENUMERATION:
                 self.ttype = SdoTerm.ENUMERATIONVALUE
-                #log.info("%s is ENUMERATIONVALUE" % self.getId())
+                log.info("%s is ENUMERATIONVALUE" % self.getId())
             else:
                 raise Exception("Unknown parent type '%s' for term: %s" % (ttype, self.uri))
                 
@@ -116,13 +118,13 @@ class SdoTermSource():
             self.term = SdoEnumeration(self.id,self.uri,self.label)
         elif self.ttype == SdoTerm.ENUMERATIONVALUE:
             self.term = SdoEnumerationvalue(self.id,self.uri,self.label)
+            if self.parent:
+                self.term.enumerationParent = self.parent.id
         elif self.ttype == SdoTerm.REFERENCE:
             self.term = SdoReference(self.id,self.uri,self.label)
 
-        
-
+        self.term.acknowledgements = self.getAcknowledgements()
         self.term.comment = self.getComment()
-        self.term.comments = self.getComments()
         self.term.equivalents = self.getEquivalents()
         self.term.pending = self.inLayers("pending")
         self.term.retired = self.inLayers("attic")
@@ -132,6 +134,26 @@ class SdoTermSource():
         self.term.supersededBy = self.getSupersededBy()
         self.term.supersedes = self.getSupersedes()
         self.term.termStack = self.getTermStack()
+        self.getParentPaths() #MUST be called after supers has been added to self.term
+        self.term.breadcrumbs = self.getParentPaths()
+        
+        #Class (Type) Building
+        if self.ttype == SdoTerm.TYPE or self.ttype == SdoTerm.DATATYPE or self.ttype == SdoTerm.ENUMERATION:
+            self.term.properties = self.getProperties(getall=False)
+            self.term.allProperties = self.getProperties(getall=True)
+            self.term.expectedTypeFor = self.getTargetOf()
+            if self.ttype == SdoTerm.ENUMERATION:
+                if not len(self.term.properties):
+                    self.term.allProperties = []
+                    self.term.termStack = []
+            self.term.enumerationMembers = self.getEnumerationMembers()
+        elif self.ttype == SdoTerm.PROPERTY:
+            self.term.domainIncludes = self.getDomains()
+            self.term.rangeIncludes = self.getRanges()
+        elif self.ttype == SdoTerm.ENUMERATIONVALUE:
+            pass
+        
+        
         
         TERMS[self.uri] = self.term
         
@@ -165,9 +187,9 @@ class SdoTermSource():
             ret = [] 
             #log.info("query %s" % query)
             res = SdoTermSource.query(query)
-            #log.info("res %d" % len(res))
             for row in res:
                 self.enum = row
+        #log.info("res %s" % self.enum)
         return self.enum
             
         
@@ -191,7 +213,7 @@ class SdoTermSource():
             self.comments = []
             comms = self.loadObjects(rdflib.RDFS.comment)
             for c in comms:
-                self.comments.append(c)
+                self.comments.append(unicode(c))
         return self.comments
     def getComment(self):
         if not self.comment:
@@ -202,7 +224,7 @@ class SdoTermSource():
             tmp = []
             ss = self.loadObjects("schema:supersededBy")
             for s in ss:
-                t = SdoTermSource._getTerm(str(s))
+                t = uri2id(str(s))
                 if t:
                     tmp.append(t)
                     
@@ -218,8 +240,7 @@ class SdoTermSource():
             self.supersedes = []
             subs = self.loadSubjects("schema:supersededBy")
             for sub in subs:
-                term = SdoTermSource._getTerm(sub,createReference=True)
-                sortedAddUnique(self.supersedes,term)
+                self.supersedes = uri2id(str(sub))
         return self.supersedes
     def getSourcesAndAcks(self):
         if not self.srcaks:
@@ -238,7 +259,7 @@ class SdoTermSource():
             #log.info(">>>>> getSourcesAndAcks %s" % len(self.srcaks)) 
             if len(self.srcaks):
                 for ao in self.srcaks:
-                    acks = ao.comments
+                    acks = ao.comment
                     if len(acks):
                         for ack in acks:
                             self.aks.append(ack)
@@ -260,7 +281,7 @@ class SdoTermSource():
         return self.layer
     def getInverseOf(self):
         if not self.inverseOf:
-            self.inverseOf = SdoTermSource._getTerm(self.loadValue("schema:inverseOf"))
+            self.inverseOf = uri2id(str(self.loadValue("schema:inverseOf")))
         return self.inverseOf
     def getSupers(self):
         if not self.supers:
@@ -268,24 +289,44 @@ class SdoTermSource():
         return self.supers
     def getTermStack(self):
         if not self.termStack:
-            self.termStack = [self]
+            self.termStack = [self.id]
             for sup in self.getSupers():
                 s = SdoTermSource._getTerm(sup,createReference=True)
                 if s.termStack:
                     self.termStack.extend(s.termStack)
+
+            stack = []
+            for t in reversed(self.termStack):
+                if t not in stack:
+                    stack.append(t)
+            self.termStack = list(reversed(stack))
         return self.termStack
     def getSubs(self):
         if not self.subs:
             self.loadsubs()
         return self.subs
-    def getProperties(self):
+    def getProperties(self, getall = False):
         if not self.props:
             self.props = []
             subs = self.loadSubjects("schema:domainIncludes")
             for sub in subs:
-                term = SdoTermSource._getTerm(sub,createReference=True)
-                sortedAddUnique(self.props,term)
-        return self.props
+                self.props.append(uri2id(str(sub)))
+            self.props.sort()
+        ret = self.props
+        
+        if getall:
+            allprops = []
+            allprops.extend(self.props)
+            for t in self.getTermStack():
+                if t != self.id:
+                    trm = SdoTermSource._getTerm(t,createReference=True)
+                    for p in trm.properties:
+                        if p not in allprops:
+                            allprops.append(p)
+            allprops.sort()
+            ret = allprops
+        return ret
+            
     def getPropUsedOn(self):
         raise Exception("Not implemented yet")
         return self.propUsedOn
@@ -294,16 +335,16 @@ class SdoTermSource():
             self.ranges = []
             objs = self.loadObjects("schema:rangeIncludes")
             for obj in objs:
-                term = SdoTermSource._getTerm(obj,createReference=True)
-                sortedAddUnique(self.ranges,term)
+                self.ranges.append(uri2id(str(obj)))
+            self.ranges.sort()
         return self.ranges
     def getDomains(self):
         if not self.domains:
             self.domains = []
             objs = self.loadObjects("schema:domainIncludes")
             for obj in objs:
-                term = SdoTermSource._getTerm(obj,createReference=True)
-                sortedAddUnique(self.domains,term)
+                self.domains.append(uri2id(str(obj)))
+            self.domains.sort()
         return self.domains
 
     def getTargetOf(self,plusparents=False,stopontarget=False):
@@ -311,18 +352,18 @@ class SdoTermSource():
             self.targetOf = []
             subs = self.loadSubjects("schema:rangeIncludes")
             for sub in subs:
-                term = SdoTermSource._getTerm(sub,createReference=True)
-                sortedAddUnique(self.targetOf,term)
+                self.targetOf.append(uri2id(str(sub)))
         ret = self.targetOf
         if not (len(self.targetOf) and stopontarget):
             if plusparents:
                 targets = self.targetOf
                 for s in self.getSupers():
-                    if s.getId() == "Enumeration" or s.getId() == "Thing":
+                    sup = SdoTermSource._getTerm(s,createReference=True)
+                    if sup.uri() == ENUMERATIONURI or sup.uri == THINGURI:
                         break
-                    ptargets = s.getTargetOf()
+                    ptargets = sup.expectedTypeFor
                     for t in ptargets:
-                        sortedAddUnique(targets,t)
+                        targets.append(t)
                     if len(targets) and stopontarget:
                         break
                 ret = targets
@@ -425,15 +466,7 @@ class SdoTermSource():
         #log.info("res %d" % len(res))
         self.supers = []
         for row in res:
-            self.supers.append(str(row.sup))
-            #super = SdoTermSource._getTerm(row.sup,createReference=True)
-            #if not super:
-            #    log.debug("Failed to get term for %s" % row.sup)
-            #    continue
-            #sortedAddUnique(self.supers,row.sup)
-        #if self.isEnumerationValue():
-            #sortedAddUnique(self.supers,self.parent)
-            
+            self.supers.append(uri2id(str(row.sup)))
 
 
     def loadsubs(self):
@@ -452,53 +485,59 @@ class SdoTermSource():
         #log.info("res %d" % len(res))
         self.subs = []
         for row in res:
-            self.subs.append(str(row.sub))
+            self.subs.append(uri2id(str(row.sub)))
 
-        if self.ttype == SdoTerm.ENUMERATION or self.ttype == SdoTerm.DATATYPE:
+        if self.ttype == SdoTerm.DATATYPE:
             subjects = self.loadSubjects("a") #Enumerationvalues have an Enumeration as a type
             for child in subjects:
-                self.subs.append(child)
-            
-        
-    def checkEnumerations(self):
-        for t in self.supers: #Is parent a schema:Enumeration
-            if t.id == "http://schema.org/Enumeration":
-                self.ttype = SdoTerm.ENUMERATION
-                return
+                self.subs.append(uri2id(str(child)))
+                                        
 
-        if SdoTermSource.checkForEnumVal(self):
-            self.ttype = SdoTerm.ENUMERATIONVALUE
-                            
+    def getEnumerationMembers(self):
+        
+        if not self.members and self.ttype == SdoTerm.ENUMERATION:
+            self.members = []
+            subjects = self.loadSubjects("a") #Enumerationvalues have an Enumeration as a type
+            for child in subjects:
+                self.members.append(uri2id(str(child)))
+            self.members.sort()
+        return self.members
+                                        
+        
+    
     def getParentPaths(self, cstack=None):
-        with TERMSLOCK:
-            self._pstacks = []
-            if cstack == None:
-                cstack = []
-            self._pstacks.append(cstack)
-            self._getParentPaths(self,cstack)
-            return self._pstacks
+        self._pstacks = []
+        if cstack == None:
+            cstack = []
+        self._pstacks.append(cstack)
+        self._getParentPaths(self.term,cstack)
+        return self._pstacks
         
     def _getParentPaths(self, term, cstack):
-        if ":" in term.getId():  #Suppress external class references
+        if ":" in term.id:  #Suppress external class references
             return
 
-        cstack.append(term)
+        cstack.insert(0,term.id)
         tmpStacks = []
         tmpStacks.append(cstack)
-        supers = term.getSupers()
-        if term.getParent():
-            supers.append(term.getParent())
-    
-        for i in range(len(supers)):
-            if(i > 0):
-                t = cstack[:]
-                tmpStacks.append(t)
-                self._pstacks.append(t)
+        supers = term.supers
 
-        x=0
-        for p in supers:
-            self._getParentPaths(p,tmpStacks[x])
-            x += 1
+        if term.termType == SdoTerm.ENUMERATIONVALUE and term.enumerationParent:
+            if term.enumerationParent not in supers:
+                supers.append(term.enumerationParent)
+    
+        if supers:
+            for i in range(len(supers)):
+                if(i > 0):
+                    t = cstack[:]
+                    tmpStacks.append(t)
+                    self._pstacks.append(t)
+
+            x=0
+            for p in supers:
+                sup = SdoTermSource._getTerm(p)
+                self._getParentPaths(sup,tmpStacks[x])
+                x += 1
             
 
     @staticmethod
@@ -705,6 +744,11 @@ class SdoTermSource():
     def setQueryGraph(g):
         
         SdoTermSource.QUERYGRAPH = g
+        g.bind("schema","https://schema.org/")
+        g.bind("owl","http://www.w3.org/2002/07/owl#")
+        g.bind("dc","http://purl.org/dc/elements/1.1/")
+        g.bind("dct","http://purl.org/dc/terms/")
+        
     
     
     @staticmethod
@@ -797,6 +841,11 @@ def getProtoAndRoot(uri):
        return None,None
          
 
+def uri2id(uri):
+    if uri.startswith(VOCABURI):
+        return uri[len(VOCABURI):]
+    return uri
+    
 
 def prefixFromUri(uri):
     uri = str(uri)

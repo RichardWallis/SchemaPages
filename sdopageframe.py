@@ -7,16 +7,12 @@ from sdoterm import *
 triplesfile = "schemaorg-all-https.nt"
 termgraph = rdflib.Graph()
 termgraph.parse(triplesfile, format="nt")
-termgraph.bind("schema","https://schema.org/")
-termgraph.bind("owl","http://www.w3.org/2002/07/owl#")
-termgraph.bind("dc","http://purl.org/dc/elements/1.1/")
-termgraph.bind("dct","http://purl.org/dc/terms/")
 
 print ("loaded %s triples" % len(termgraph))
 
 SdoTermSource.setQueryGraph(termgraph)
 
-term = SdoTermSource.getTerm("FoodEstablishment")
+term = SdoTermSource.getTerm("BusOrCoach")
 
 print("")
 print("TYPE: %s" % term.termType)
@@ -24,16 +20,37 @@ print("URI: %s" % term.uri)
 print("ID: %s" % term.id)
 print("LABEL: %s" % term.label)
 
+print("BREADCRUMBS: %s" % term.breadcrumbs)
 print("COMMENT: %s" % term.comment)
-print("COMMENTS: %s" % term.comments)
 print("EQIVALENTS: %s" % term.equivalents)
 print("EXAMPLES: %s" % term.examples)
 print("PENDING: %s" % term.pending)
 print("RETIRED: %s" % term.retired)
 print("SOURCES: %s" % term.sources)
+print("acknowledgements" % term.acknowledgements)
 print("SUBS: %s" % term.subs)
 print("SUPERS: %s" % term.supers)
 print("SUPERSEDEDBY: %s" % term.supersededBy)
 print("SUPERSEDES: %s" % term.supersedes)
 print("TERMSTACK: %s" % term.termStack)
+
+for stackElement in term.termStack:
+  print("Element: %s" % stackElement)
+  
+if term.termType == SdoTerm.TYPE or term.termType == SdoTerm.ENUMERATION:
+    print("Properties: %s" % term.properties)
+    print("All properties: %s" % term.allProperties)
+    print("Expected Type for: %s" % term.expectedTypeFor)
+      
+if term.termType == SdoTerm.PROPERTY:
+    print("Domain includes: %s" % term.domainIncludes)
+    print("Range includes: %s" % term.rangeIncludes)
+
+if term.termType == SdoTerm.ENUMERATION:
+    print("Enumeration Members: %s" % term.enumerationMembers)
+    
+    
+if term.termType == SdoTerm.ENUMERATIONVALUE:
+    print("Parent Enumeration: %s" %  term.enumerationParent)
+
 
