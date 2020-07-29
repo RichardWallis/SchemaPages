@@ -16,6 +16,7 @@ import rdflib
 from rdflib import URIRef
 import io
 from sdoterm import *
+from localmarkdown import Markdown
 
 VOCABURI="https://schema.org/"
 CORELAYER = "core"
@@ -394,7 +395,7 @@ class SdoTermSource():
     def loadComment(self):
         comments = self.getComments()
         wpre = None
-        name = self.getId()
+        name = self.term.id
         if name.startswith("http"): #Wikilinks in markdown default to current site - extermals need overriding
             val = os.path.basename(name)
             wpre = name[:len(name) - len(val)]
@@ -407,7 +408,7 @@ class SdoTermSource():
             else:
                 first = False
             buf.append(com)
-            #buf.write(Markdown.parse(com,wpre=wpre))
+            buf.append  (Markdown.parse(com,wpre=wpre))
         ret = ''.join(buf)
         if not len(ret):
             ret = "-"

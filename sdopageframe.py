@@ -2,6 +2,10 @@
 import rdflib
 from sdotermsource import *
 from sdoterm import *
+from localmarkdown import Markdown
+
+Markdown.setWikilinkCssClass("localLink")
+Markdown.setWikilinkPrePath("/")
 
 
 triplesfile = "schemaorg-all-https.nt"
@@ -12,7 +16,7 @@ print ("loaded %s triples" % len(termgraph))
 
 SdoTermSource.setQueryGraph(termgraph)
 
-term = SdoTermSource.getTerm("BusOrCoach")
+term = SdoTermSource.getTerm("CompleteDataFeed")
 
 print("")
 print("TYPE: %s" % term.termType)
@@ -52,5 +56,12 @@ if term.termType == SdoTerm.ENUMERATION:
     
 if term.termType == SdoTerm.ENUMERATIONVALUE:
     print("Parent Enumeration: %s" %  term.enumerationParent)
+    
+for p in term.properties:
+  prop = SdoTermSource.getTerm(p)
+  print("Prop: %s.  Pending: %s" % (prop.id,prop.pending))
+  print("   Expected Types: %s" % prop.rangeIncludes)
+  print("   Comment: %s" % prop.comment)
+
 
 
