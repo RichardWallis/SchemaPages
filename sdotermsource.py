@@ -213,7 +213,7 @@ class SdoTermSource():
             self.comments = []
             comms = self.loadObjects(rdflib.RDFS.comment)
             for c in comms:
-                self.comments.append(unicode(c))
+                self.comments.append(str(c))
         return self.comments
     def getComment(self):
         if not self.comment:
