@@ -104,7 +104,8 @@ class SdoTermSource():
             
             if self.parent.termType == SdoTerm.ENUMERATION:
                 self.ttype = SdoTerm.ENUMERATIONVALUE
-                #log.info("%s is ENUMERATIONVALUE" % self.getId())
+            elif self.parent.termType == SdoTerm.DATATYPE:
+                self.ttype = SdoTerm.DATATYPE
             else:
                 raise Exception("Unknown parent type '%s' for term: %s" % (ttype, self.uri))
                 
