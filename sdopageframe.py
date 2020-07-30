@@ -19,7 +19,7 @@ print ("Types Count: %s" % len(SdoTermSource.getAllTypes(expanded=False)))
 print ("Properties Count: %s" % len(SdoTermSource.getAllProperties(expanded=False)))
 
 
-term = SdoTermSource.getTerm("Enumeration")
+term = SdoTermSource.getTerm("DataType")
 
 print("")
 print("TYPE: %s" % term.termType)

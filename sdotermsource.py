@@ -140,8 +140,9 @@ class SdoTermSource():
         #Class (Type) Building
         if self.ttype == SdoTerm.TYPE or self.ttype == SdoTerm.DATATYPE or self.ttype == SdoTerm.ENUMERATION:
             self.term.properties = self.getProperties(getall=False)
-            self.term.allProperties = self.getProperties(getall=True)
             self.term.expectedTypeFor = self.getTargetOf()
+            if not self.ttype == SdoTerm.DATATYPE:
+                self.term.allProperties = self.getProperties(getall=True)
             if self.ttype == SdoTerm.ENUMERATION:
                 if not len(self.term.properties):
                     self.term.allProperties = []
