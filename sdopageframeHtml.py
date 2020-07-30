@@ -51,11 +51,23 @@ def templateRender(term):
     #print(template.render(tvars))
     return template.render(tvars)
     
-term = SdoTermSource.getTerm("Book")
-pageout = templateRender(term)
-filename = "siteout/" + term.id +".html"
-f = open(filename,"w")
-f.write(pageout)
-f.close()
+terms = SdoTermSource.getAllTerms()
+print("Processing %s terms" % len(terms))
+import timeit
+start = timeit.timeit()
+for t in terms:
+    tic = timeit.timeit()
+    term = SdoTermSource.getTerm(t)
+    #term = SdoTermSource.getTerm("Book")
+    pageout = templateRender(term)
+    filename = "siteout/" + term.id +".html"
+    f = open(filename,"w")
+    f.write(pageout)
+    f.close()
+    toc = timeit.timeit()
+    log.info("Term: %s - %s" % (t, toc -tic))
+    
+stop = timeit.timeit()
+print ("All terms took %s seconds" % stop - start)
 
 

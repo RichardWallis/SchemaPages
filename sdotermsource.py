@@ -323,9 +323,10 @@ class SdoTermSource():
             for t in self.getTermStack():
                 if t != self.id:
                     trm = SdoTermSource._getTerm(t,createReference=True)
-                    for p in trm.properties:
-                        if p not in allprops:
-                            allprops.append(p)
+                    if trm.termType == SdoTerm.TYPE or trm.termType == SdoTerm.DATATYPE or trm.termType == SdoTerm.ENUMERATION:
+                        for p in trm.properties:
+                            if p not in allprops:
+                                allprops.append(p)
             allprops.sort()
             ret = allprops
         return ret
