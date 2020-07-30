@@ -9784,7 +9784,8 @@
 <https://schema.org/termsOfService> <http://www.w3.org/2000/01/rdf-schema#comment> "Human-readable terms of service documentation." .
 <https://schema.org/isicV4> <http://www.w3.org/2000/01/rdf-schema#comment> "The International Standard of Industrial Classification of All Economic Activities (ISIC), Revision 4 code for a particular organization, business person, or place." .
 <https://schema.org/availableStrength> <https://schema.org/isPartOf> <http://health-lifesci.schema.org> .
-<https://schema.org/Researcher> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://schema.org/Audience> .
+<https://schema.org/Researcher> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> .
+<https://schema.org/Researcher> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://schema.org/Audience> .
 <https://schema.org/meetsEmissionStandard> <http://www.w3.org/2000/01/rdf-schema#comment> "Indicates that the vehicle meets the respective emission standard." .
 <https://schema.org/billingPeriod> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
 <https://schema.org/hasMenuItem> <https://schema.org/rangeIncludes> <https://schema.org/MenuItem> .
