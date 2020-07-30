@@ -15,7 +15,7 @@
     </div>
     <div>
         {% for type in term.expectedTypeFor %}
-        {% if not loop.first %}<h2>Expected Type For</h2>{% endif %}<a href="{{href_prefix}}{{type}}">{{ type }}</a>{% if not loop.last %}, {% endif %}{% endfor %}
+        {% if loop.first %}<h2>Expected Type For</h2>{% endif %}<a href="{{href_prefix}}{{type}}">{{ type }}</a>{% if not loop.last %}, {% endif %}{% endfor %}
     </div>
 </body>
 </html>
