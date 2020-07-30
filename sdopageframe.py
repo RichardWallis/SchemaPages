@@ -15,8 +15,11 @@ termgraph.parse(triplesfile, format="nt")
 print ("loaded %s triples" % len(termgraph))
 
 SdoTermSource.setQueryGraph(termgraph)
+print ("Types Count: %s" % len(SdoTermSource.getAllTypes(expanded=False)))
+print ("Properties Count: %s" % len(SdoTermSource.getAllProperties(expanded=False)))
 
-term = SdoTermSource.getTerm("Book")
+
+term = SdoTermSource.getTerm("Enumeration")
 
 print("")
 print("TYPE: %s" % term.termType)
@@ -26,7 +29,7 @@ print("LABEL: %s" % term.label)
 
 print("BREADCRUMBS: %s" % term.breadcrumbs)
 print("COMMENT: %s" % term.comment)
-print("EQIVALENTS: %s" % term.equivalents)
+print("EQUIVALENTS: %s" % term.equivalents)
 print("EXAMPLES: %s" % term.examples)
 print("PENDING: %s" % term.pending)
 print("RETIRED: %s" % term.retired)

@@ -11,6 +11,7 @@ log = logging.getLogger(__name__)
 
 import threading
 import os
+import sys
 import re
 import rdflib
 from rdflib import URIRef
@@ -214,7 +215,10 @@ class SdoTermSource():
             self.comments = []
             comms = self.loadObjects(rdflib.RDFS.comment)
             for c in comms:
-                self.comments.append(str(c))
+                if sys.version_info.major == 3:
+                    self.comments.append(str(c))
+                else:
+                    self.comments.append(unicode(c))
         return self.comments
     def getComment(self):
         if not self.comment:
@@ -668,19 +672,19 @@ class SdoTermSource():
         
         
     @staticmethod
-    def getAllTypes(layer=None):
-        return SdoTermSource.getAllTerms(ttype = SdoTerm.TYPE,layer=layer)
+    def getAllTypes(layer=None,expanded=False):
+        return SdoTermSource.getAllTerms(ttype = SdoTerm.TYPE,layer=layer,expanded=expanded)
         
     @staticmethod
-    def getAllProperties(layer=None):
-        return SdoTermSource.getAllTerms(ttype = SdoTerm.PROPERTY,layer=layer)
+    def getAllProperties(layer=None,expanded=False):
+        return SdoTermSource.getAllTerms(ttype = SdoTerm.PROPERTY,layer=layer,expanded=expanded)
 
     @staticmethod
-    def getAllEnumerations(layer=None):
-        return SdoTermSource.getAllTerms(ttype = SdoTerm.ENUMERATION,layer=layer)
+    def getAllEnumerations(layer=None,expanded=False):
+        return SdoTermSource.getAllTerms(ttype = SdoTerm.ENUMERATION,layer=layer,expanded=expanded)
 
     @staticmethod
-    def getAllTerms(ttype=None,layer=None,supressSourceLinks=False):
+    def getAllTerms(ttype=None,layer=None,supressSourceLinks=False,expanded=False):
         typsel = ""
         if ttype == SdoTerm.TYPE:
             typsel = "a <%s>;" % rdflib.RDFS.Class
@@ -736,8 +740,14 @@ class SdoTermSource():
         #log.info("query %s" % query)
         res = SdoTermSource.query(query)
         #log.info("res %d" % len(res))
-        terms = SdoTermSource.termsFromResults(res,termId=None)
-        log.info("count %s TERMS %s" % (len(terms),len(TERMS)))
+        if expanded:
+            terms = SdoTermSource.termsFromResults(res,termId=None)
+        else:
+            terms = []
+            for row in res:
+                terms.append(uri2id(str(row.term)))
+        
+        #log.info("count %s TERMS %s" % (len(terms),len(TERMS)))
         return terms
         
     @staticmethod
