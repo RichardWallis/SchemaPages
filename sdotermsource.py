@@ -100,13 +100,11 @@ class SdoTermSource():
             self.ttype = SdoTerm.REFERENCE
             self.label = id
         else:
-            log.info("checking parent %s" % ttype)
             self.parent = SdoTermSource._getTerm(str(ttype),createReference=True)
-            log.info("Parent: type %s id %s" %(self.parent.termType,self.parent.id))
             
             if self.parent.termType == SdoTerm.ENUMERATION:
                 self.ttype = SdoTerm.ENUMERATIONVALUE
-                log.info("%s is ENUMERATIONVALUE" % self.getId())
+                #log.info("%s is ENUMERATIONVALUE" % self.getId())
             else:
                 raise Exception("Unknown parent type '%s' for term: %s" % (ttype, self.uri))
                 
