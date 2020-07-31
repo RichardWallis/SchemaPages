@@ -237,6 +237,8 @@ class SdoTermSource():
                 log.debug("Warning '%s' supersededBy more than 1 term ()%s" % (self.id,len(tmp)))
             if len(tmp):
                 self.supersededBy = tmp[0]
+            else:
+                self.supersededBy = ""
         return self.supersededBy
     def superseded(self):
         return self.getSupersededBy() != None

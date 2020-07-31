@@ -1,0 +1,76 @@
+syntax = "proto2";
+package SchemaPages;
+
+enum TermType {
+    TYPE = 0;
+    PROPERTY = 1;
+    DATATYPE = 2;
+    ENUMERATION = 3;
+    ENUMERATIONVALUE = 4;
+    REFERENCE = 5;
+    }
+
+message SDOTerm {
+    required TermType termType = 1;
+    required string uri = 2;
+    required string label = 4;
+
+    message BreadCrumb {
+        repeated string breadcrumb = 1;
+    }
+    repeated BreadCrumb breadcrumbs = 6;
+    
+    repeated string acknowledgements = 5;
+    required string comment = 7;
+    repeated string equivalents = 8;
+    required bool pending = 9;
+    required bool retired = 10;
+    repeated string sources = 11;
+    repeated string subs = 12;
+    repeated string supers = 13;
+    optional string supersededBy = 14;
+    repeated string supersedes = 15;
+    repeated string termStack = 16;
+}
+
+message SDOType {
+    required string id = 1;
+    repeated SDOTerm termdescriptor = 2;
+    repeated string properties = 3;
+    repeated string allProperties = 4;
+    repeated string expectedTypeFor = 5;
+}
+
+message SDOProperty {
+    required string id = 1;
+    repeated SDOTerm termdescriptor = 2;
+    repeated string domainIncludes = 3;
+    repeated string rangeIncludes = 4;
+}
+
+message SDODataType {
+    required string id = 1;
+    repeated SDOTerm termdescriptor = 2;
+    repeated string properties = 3;
+    repeated string allProperties = 4;
+    repeated string expectedTypeFor = 5;
+}
+
+message SDOEnumeration {
+    required string id = 1;
+    repeated SDOTerm termdescriptor = 2;
+    repeated string properties = 3;
+    repeated string allProperties = 4;
+    repeated string expectedTypeFor = 5;
+}
+
+message SDOEnumerationValue {
+    required string id = 1;
+    repeated SDOTerm termdescriptor = 2;
+    required string enumerationParent = 3;
+}
+
+message SDOReference {
+    required string id = 1;
+    repeated SDOTerm termdescriptor = 2;
+}

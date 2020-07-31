@@ -29,7 +29,7 @@ class SdoTerm():
         
         self.acknowledgements = []
         self.breadcrumbs = []
-        self.comment = None
+        self.comment = ""
         self.equivalents = []
         self.examples = []
         self.pending = False
@@ -37,7 +37,7 @@ class SdoTerm():
         self.sources = []
         self.subs = []
         self.supers = []
-        self.supersededBy = None
+        self.supersededBy = ""
         self.supersedes = []
         self.termStack = []
         
@@ -86,7 +86,7 @@ class SdoEnumerationvalue(SdoTerm):
 
     def __init__(self,Id,uri,label):
         SdoTerm.__init__(self,SdoTerm.ENUMERATIONVALUE,Id,uri,label)
-        self.enumerationParent = None
+        self.enumerationParent = ""
 
     
 class SdoReference(SdoTerm):
