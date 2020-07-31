@@ -10,14 +10,15 @@ enum TermType {
     REFERENCE = 5;
     }
 
+message SuperPath {
+    repeated string superPath = 1;
+}
+
 message SDOTerm {
     required TermType termType = 1;
     required string uri = 2;
     required string label = 4;
 
-    message SuperPath {
-        repeated string superPath = 1;
-    }
     repeated SuperPath superPaths = 6;
     
     repeated string acknowledgements = 5;
@@ -38,6 +39,7 @@ message SDOType {
     repeated SDOTerm termdescriptor = 2;
     repeated string properties = 3;
     repeated string expectedTypeFor = 4;
+    repeated string enumerationMembers = 5;
 }
 
 message SDOProperty {
@@ -45,21 +47,6 @@ message SDOProperty {
     repeated SDOTerm termdescriptor = 2;
     repeated string domainIncludes = 3;
     repeated string rangeIncludes = 4;
-}
-
-message SDODataType {
-    required string id = 1;
-    repeated SDOTerm termdescriptor = 2;
-    repeated string properties = 3;
-    repeated string expectedTypeFor = 4;
-}
-
-message SDOEnumeration {
-    required string id = 1;
-    repeated SDOTerm termdescriptor = 2;
-    repeated string properties = 3;
-    repeated string expectedTypeFor = 4;
-    repeated string enumerationMembers = 5;
 }
 
 message SDOEnumerationValue {
@@ -72,3 +59,5 @@ message SDOReference {
     required string id = 1;
     repeated SDOTerm termdescriptor = 2;
 }
+
+

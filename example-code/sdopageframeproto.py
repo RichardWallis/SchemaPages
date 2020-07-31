@@ -24,27 +24,25 @@ print ("Terms Count: %s" % len(terms))
 
 import schemapages_pb2
 
+sdotypemap = {
+    SdoTerm.TYPE: schemapages_pb2.TermType.TYPE,
+    SdoTerm.PROPERTY: schemapages_pb2.TermType.PROPERTY,
+    SdoTerm.DATATYPE: schemapages_pb2.TermType.DATATYPE,
+    SdoTerm.ENUMERATION: schemapages_pb2.TermType.ENUMERATION,
+    SdoTerm.ENUMERATIONVALUE: schemapages_pb2.TermType.ENUMERATIONVALUE,
+    SdoTerm.REFERENCE: schemapages_pb2.TermType.REFERENCE
+}
 
 def term2protomsg(termid):
     term = SdoTermSource.getTerm(termid)
-    if term.termType == SdoTerm.TYPE:
+    if term.termType == SdoTerm.TYPE or term.termType == SdoTerm.DATATYPE or term.termType == SdoTerm.ENUMERATION:
         msg = schemapages_pb2.SDOType()
-        msgTermType = schemapages_pb2.TermType.TYPE
     elif term.termType == SdoTerm.PROPERTY:
         msg = schemapages_pb2.SDOProperty()
-        msgTermType = schemapages_pb2.TermType.PROPERTY
-    elif term.termType == SdoTerm.DATATYPE:
-        msg = schemapages_pb2.SDODataType()
-        msgTermType = schemapages_pb2.TermType.DATATYPE
-    elif term.termType == SdoTerm.ENUMERATION:
-        msg = schemapages_pb2.SDOEnumeration()
-        msgTermType = schemapages_pb2.TermType.ENUMERATION
     elif term.termType == SdoTerm.ENUMERATIONVALUE:
         msg = schemapages_pb2.SDOEnumerationValue()
-        msgTermType = schemapages_pb2.TermType.ENUMERATIONVALUE
     elif term.termType == SdoTerm.REFERENCE:
         msg = schemapages_pb2.SDOReference()
-        msgTermType = schemapages_pb2.TermType.REFERENCE
     else:
         print("Unknown term type '%s'" % term.termType)
 
@@ -53,7 +51,7 @@ def term2protomsg(termid):
 
     msgterm = msg.termdescriptor.add()
 
-    msgterm.termType = msgTermType
+    msgterm.termType = sdotypemap[term.termType]
     msgterm.uri = term.uri
     msgterm.label = term.label
     msgterm.acknowledgements.extend(term.acknowledgements)
@@ -72,19 +70,14 @@ def term2protomsg(termid):
     msgterm.termStack.extend(term.termStack)
 
 
-    if term.termType == SdoTerm.TYPE:
+    if term.termType == SdoTerm.TYPE or term.termType == SdoTerm.DATATYPE or term.termType == SdoTerm.ENUMERATION:
         msg.properties.extend(term.properties)
         msg.expectedTypeFor.extend(term.expectedTypeFor)
+        if term.termType == SdoTerm.ENUMERATION:
+            msg.enumerationMembers.extend(term.enumerationMembers)
     elif term.termType == SdoTerm.PROPERTY:
         msg.domainIncludes.extend(term.domainIncludes)
         msg.rangeIncludes.extend(term.rangeIncludes)
-    elif term.termType == SdoTerm.DATATYPE:
-        msg.properties.extend(term.properties)
-        msg.expectedTypeFor.extend(term.expectedTypeFor)
-    elif term.termType == SdoTerm.ENUMERATION:
-        msg.properties.extend(term.properties)
-        msg.expectedTypeFor.extend(term.expectedTypeFor)
-        msg.enumerationMembers.extend(term.enumerationMembers)
     elif term.termType == SdoTerm.ENUMERATIONVALUE:
         msg.enumerationParent = term.enumerationParent
     elif term.termType == SdoTerm.REFERENCE:
