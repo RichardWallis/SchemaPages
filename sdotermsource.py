@@ -613,8 +613,8 @@ class SdoTermSource():
         return term
 
     @staticmethod
-    def expandTerm(term):
-        
+    def expandTerm(term,depth=0):
+
         if not term.expanded:
             term.expanded = True
             term.subs = SdoTermSource.termsFromIds(term.subs)
@@ -634,20 +634,14 @@ class SdoTermSource():
                 term.domainIncludes = SdoTermSource.termsFromIds(term.domainIncludes)
                 term.rangeIncludes = SdoTermSource.termsFromIds(term.rangeIncludes)
             
-            stack = []
-            for t in term.termStack:
-                stack.append(SdoTermSource.expandTermProperties(t))
-            term.termStack = stack
+            if not depth: #Expand the indivdual terms in the terms termstack but prevent recursion further.
+                stack = []
+                for t in term.termStack:
+                    stack.append(SdoTermSource.expandTerm(t,depth=depth +1))
+                term.termStack = stack
         
         return term
  
-    @staticmethod
-    def expandTermProperties(term):
-        if term.termType == SdoTerm.TYPE or term.termType == SdoTerm.DATATYPE or term.termType == SdoTerm.ENUMERATION:
-            term.properties = SdoTermSource.termsFromIds(term.properties)
-        return term
-        
-    
     @staticmethod
     def termFromId(id=""):
         ids = SdoTermSource.termsFromIds([id])
