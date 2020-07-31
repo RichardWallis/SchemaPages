@@ -53,9 +53,9 @@ def term2protomsg(termid):
     msgterm.uri = term.uri
     msgterm.label = term.label
     msgterm.acknowledgements.extend(term.acknowledgements)
-    for i in term.breadcrumbs:
-        bc = msgterm.breadcrumbs.add()
-        bc.breadcrumb.extend(i)
+    for i in term.superPaths:
+        sp = msgterm.superPaths.add()
+        sp.superPath.extend(i)
     msgterm.comment = term.comment
     msgterm.equivalents.extend(term.equivalents)
     msgterm.pending = term.pending
