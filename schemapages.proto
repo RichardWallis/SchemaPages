@@ -37,8 +37,7 @@ message SDOType {
     required string id = 1;
     repeated SDOTerm termdescriptor = 2;
     repeated string properties = 3;
-    repeated string allProperties = 4;
-    repeated string expectedTypeFor = 5;
+    repeated string expectedTypeFor = 4;
 }
 
 message SDOProperty {
@@ -52,17 +51,15 @@ message SDODataType {
     required string id = 1;
     repeated SDOTerm termdescriptor = 2;
     repeated string properties = 3;
-    repeated string allProperties = 4;
-    repeated string expectedTypeFor = 5;
+    repeated string expectedTypeFor = 4;
 }
 
 message SDOEnumeration {
     required string id = 1;
     repeated SDOTerm termdescriptor = 2;
     repeated string properties = 3;
-    repeated string allProperties = 4;
-    repeated string expectedTypeFor = 5;
-    repeated string enumerationMembers = 6;
+    repeated string expectedTypeFor = 4;
+    repeated string enumerationMembers = 5;
 }
 
 message SDOEnumerationValue {

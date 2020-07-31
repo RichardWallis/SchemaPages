@@ -1,4 +1,8 @@
 #!/usr/bin/env python2.7
+import sys
+import os
+sys.path.append( os.getcwd() )
+sys.path.insert( 1, 'markdown' ) #Pickup libs, rdflib etc., from shipped lib directory
 import rdflib
 from sdotermsource import *
 from sdoterm import *
@@ -8,7 +12,7 @@ Markdown.setWikilinkCssClass("localLink")
 Markdown.setWikilinkPrePath("/")
 
 
-triplesfile = "schemaorg-all-https.nt"
+triplesfile = "data/schemaorg-all-https.nt"
 termgraph = rdflib.Graph()
 termgraph.parse(triplesfile, format="nt")
 
@@ -70,18 +74,15 @@ def term2protomsg(termid):
 
     if term.termType == SdoTerm.TYPE:
         msg.properties.extend(term.properties)
-        msg.allProperties.extend(term.allProperties)
         msg.expectedTypeFor.extend(term.expectedTypeFor)
     elif term.termType == SdoTerm.PROPERTY:
         msg.domainIncludes.extend(term.domainIncludes)
         msg.rangeIncludes.extend(term.rangeIncludes)
     elif term.termType == SdoTerm.DATATYPE:
         msg.properties.extend(term.properties)
-        msg.allProperties.extend(term.allProperties)
         msg.expectedTypeFor.extend(term.expectedTypeFor)
     elif term.termType == SdoTerm.ENUMERATION:
         msg.properties.extend(term.properties)
-        msg.allProperties.extend(term.allProperties)
         msg.expectedTypeFor.extend(term.expectedTypeFor)
         msg.enumerationMembers.extend(term.enumerationMembers)
     elif term.termType == SdoTerm.ENUMERATIONVALUE:

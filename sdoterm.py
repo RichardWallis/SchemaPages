@@ -49,7 +49,6 @@ class SdoType(SdoTerm):
         SdoTerm.__init__(self,SdoTerm.TYPE,Id,uri,label)
         
         self.properties = []
-        self.allProperties = []
         self.expectedTypeFor = []
         
     
@@ -68,7 +67,6 @@ class SdoDataType(SdoTerm):
         SdoTerm.__init__(self,SdoTerm.DATATYPE,Id,uri,label)
 
         self.properties = []
-        self.allProperties = []
         self.expectedTypeFor = []
 
 
@@ -78,7 +76,6 @@ class SdoEnumeration(SdoTerm):
         SdoTerm.__init__(self,SdoTerm.ENUMERATION,Id,uri,label)
 
         self.properties = []
-        self.allProperties = []
         self.expectedTypeFor = []
         self.enumerationMembers = []
 

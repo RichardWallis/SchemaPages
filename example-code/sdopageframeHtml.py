@@ -1,4 +1,9 @@
 #!/usr/bin/env python2.7
+import sys
+import os
+sys.path.append( os.getcwd() )
+sys.path.insert( 1, 'markdown' ) #Pickup libs, rdflib etc., from shipped lib directory
+
 import rdflib
 from sdotermsource import *
 from sdoterm import *
@@ -9,7 +14,7 @@ Markdown.setWikilinkCssClass("localLink")
 Markdown.setWikilinkPrePath("/")
 
 
-triplesfile = "schemaorg-all-https.nt"
+triplesfile = "data/schemaorg-all-https.nt"
 termgraph = rdflib.Graph()
 termgraph.parse(triplesfile, format="nt")
 

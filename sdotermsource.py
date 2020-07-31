@@ -141,11 +141,8 @@ class SdoTermSource():
         if self.ttype == SdoTerm.TYPE or self.ttype == SdoTerm.DATATYPE or self.ttype == SdoTerm.ENUMERATION:
             self.term.properties = self.getProperties(getall=False)
             self.term.expectedTypeFor = self.getTargetOf()
-            if not self.ttype == SdoTerm.DATATYPE:
-                self.term.allProperties = self.getProperties(getall=True)
             if self.ttype == SdoTerm.ENUMERATION:
                 if not len(self.term.properties):
-                    self.term.allProperties = []
                     self.term.termStack = []
             self.term.enumerationMembers = self.getEnumerationMembers()
         elif self.ttype == SdoTerm.PROPERTY:
@@ -568,6 +565,7 @@ class SdoTermSource():
 
         if not termId:
             return None
+        #log.info("GET: %s" % termId)
         termId = str(termId)
         fullId = toFullId(termId)
         #log.info("_GETTERM termId %s full %s" % (termId,fullId))
@@ -610,38 +608,49 @@ class SdoTermSource():
             else:
                 log.debug("No definition of term %s" % fullId)
             term = term.term
-        if expanded:
-            term = expandTerm(term)
+        if expanded and not term.expanded:
+            term = SdoTermSource.expandTerm(term)
         return term
 
     @staticmethod
     def expandTerm(term):
         
-        term.expanded = True
-        term.subs = SdoTermSource.termsFromIds(term.subs)
-        term.supers = SdoTermSource.termsFromIds(term.supers)
-        term.termStack = SdoTermSource.termsFromIds(term.termStack)
+        if not term.expanded:
+            term.expanded = True
+            term.subs = SdoTermSource.termsFromIds(term.subs)
+            term.supers = SdoTermSource.termsFromIds(term.supers)
+            term.termStack = SdoTermSource.termsFromIds(term.termStack)
         
-        if term.termType == SdoTerm.TYPE or term.termType == SdoTerm.DATATYPE:
-            term.properties = SdoTermSource.termsFromIds(term.properties)
-            term.allProperties = SdoTermSource.termsFromIds(term.allProperties)
-            term.expectedTypeFor = SdoTermSource.termsFromIds(term.expectedTypeFor)
-        elif term.termType == SdoTerm.ENUMERATION:
-            term.properties = SdoTermSource.termsFromIds(term.properties)
-            term.allProperties = SdoTermSource.termsFromIds(term.allProperties)
-            term.expectedTypeFor = SdoTermSource.termsFromIds(term.expectedTypeFor)
-            term.enumerationMembers = SdoTermSource.termsFromIds(term.enumerationMembers)
-        elif term.termType == SdoTerm.ENUMERATIONVALUE:
-            term.enumerationParent = SdoTermSource.termFromId(term.enumerationParent)
-        elif term.termType == SdoTerm.PROPERTY:
-            term.domainIncludes = SdoTermSource.termsFromIds(term.domainIncludes)
-            term.rangeIncludes = SdoTermSource.termsFromIds(term.rangeIncludes)
+            if term.termType == SdoTerm.TYPE or term.termType == SdoTerm.DATATYPE:
+                term.properties = SdoTermSource.termsFromIds(term.properties)
+                term.expectedTypeFor = SdoTermSource.termsFromIds(term.expectedTypeFor)
+            elif term.termType == SdoTerm.ENUMERATION:
+                term.properties = SdoTermSource.termsFromIds(term.properties)
+                term.expectedTypeFor = SdoTermSource.termsFromIds(term.expectedTypeFor)
+                term.enumerationMembers = SdoTermSource.termsFromIds(term.enumerationMembers)
+            elif term.termType == SdoTerm.ENUMERATIONVALUE:
+                term.enumerationParent = SdoTermSource.termFromId(term.enumerationParent)
+            elif term.termType == SdoTerm.PROPERTY:
+                term.domainIncludes = SdoTermSource.termsFromIds(term.domainIncludes)
+                term.rangeIncludes = SdoTermSource.termsFromIds(term.rangeIncludes)
+            
+            stack = []
+            for t in term.termStack:
+                stack.append(SdoTermSource.expandTermProperties(t))
+            term.termStack = stack
         
         return term
+ 
+    @staticmethod
+    def expandTermProperties(term):
+        if term.termType == SdoTerm.TYPE or term.termType == SdoTerm.DATATYPE or term.termType == SdoTerm.ENUMERATION:
+            term.properties = SdoTermSource.termsFromIds(term.properties)
+        return term
+        
     
     @staticmethod
     def termFromId(id=""):
-        ids = termsFromIds([id])
+        ids = SdoTermSource.termsFromIds([id])
         if len(ids):
             return ids[0]
         return None
@@ -650,7 +659,10 @@ class SdoTermSource():
     def termsFromIds(ids=[]):
         ret = []
         for i in ids:
-            ret[i] = SdoTermSource._getTerm(i,expanded=False)
+            if type(i) is str:
+                ret.append(SdoTermSource._getTerm(i))
+            else:
+                ret.append(i)
         return ret
 
     @staticmethod
