@@ -61,7 +61,7 @@ if term.expanded:
     for t in term.termStack:
         print("   stack: %s" % t.id)
         for p in t.properties:
-            print("........prop %s" % p.id)
+            print("........prop %s %s" % (p.id,p.domainIncludes))
 
 #print("termStack: %s" % term.termStack)
 
