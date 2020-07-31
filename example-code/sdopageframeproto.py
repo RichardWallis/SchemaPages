@@ -65,9 +65,6 @@ def term2protomsg(termid):
     msgterm.sources.extend(term.sources)
     msgterm.subs.extend(term.subs)
     msgterm.supers.extend(term.supers)
-    msgterm.supersededBy = term.supersededBy
-    msgterm.supersedes.extend(term.supersedes)
-    msgterm.termStack.extend(term.termStack)
 
 
     if term.termType == SdoTerm.TYPE or term.termType == SdoTerm.DATATYPE or term.termType == SdoTerm.ENUMERATION:
@@ -75,11 +72,16 @@ def term2protomsg(termid):
         msg.expectedTypeFor.extend(term.expectedTypeFor)
         if term.termType == SdoTerm.ENUMERATION:
             msg.enumerationMembers.extend(term.enumerationMembers)
+        msg.supersedes.extend(term.supersedes)
+        msg.termStack.extend(term.termStack)
     elif term.termType == SdoTerm.PROPERTY:
         msg.domainIncludes.extend(term.domainIncludes)
         msg.rangeIncludes.extend(term.rangeIncludes)
+        msg.supersedes.extend(term.supersedes)
+        msg.termStack.extend(term.termStack)
     elif term.termType == SdoTerm.ENUMERATIONVALUE:
         msg.enumerationParent = term.enumerationParent
+        msg.supersedes.extend(term.supersedes)
     elif term.termType == SdoTerm.REFERENCE:
         pass
 

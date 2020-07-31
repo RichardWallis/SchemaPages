@@ -29,9 +29,6 @@ message SDOTerm {
     repeated string sources = 11;
     repeated string subs = 12;
     repeated string supers = 13;
-    optional string supersededBy = 14;
-    repeated string supersedes = 15;
-    repeated string termStack = 16;
 }
 
 message SDOBaseType {
@@ -40,6 +37,9 @@ message SDOBaseType {
     repeated string properties = 3;
     repeated string expectedTypeFor = 4;
     repeated string enumerationMembers = 5;
+    optional string supersededBy = 6;
+    repeated string supersedes = 7;
+    repeated string termStack = 8;
 }
 
 message SDOProperty {
@@ -47,17 +47,76 @@ message SDOProperty {
     repeated SDOTerm termdescriptor = 2;
     repeated string domainIncludes = 3;
     repeated string rangeIncludes = 4;
+    optional string supersededBy = 5;
+    repeated string supersedes = 6;
+    repeated string termStack = 8;
 }
 
 message SDOEnumerationValue {
     required string id = 1;
     repeated SDOTerm termdescriptor = 2;
     required string enumerationParent = 3;
+    optional string supersededBy = 4;
+    repeated string supersedes = 5;
 }
 
 message SDOReference {
     required string id = 1;
     repeated SDOTerm termdescriptor = 2;
 }
+
+message SDOTermExpanded {
+    required TermType termType = 1;
+    required string uri = 2;
+    required string label = 3;
+
+    repeated SuperPath superPaths = 4;
+    
+    repeated string acknowledgements = 5;
+    required string comment = 6;
+    repeated string equivalents = 7;
+    required bool pending = 8;
+    required bool retired = 9;
+    repeated string sources = 10;
+    repeated SDOBaseTypeExpanded subs = 11;
+    repeated SDOBaseTypeExpanded supers = 12;
+    repeated SDOBaseTypeExpanded termStack = 13;
+}
+
+message SDOBaseTypeExpanded {
+    required string id = 1;
+    repeated SDOTermExpanded termdescriptor = 2;
+    repeated SDOPropertyExpanded properties = 3;
+    repeated SDOBaseTypeExpanded expectedTypeFor = 4;
+    repeated SDOEnumerationValueExpanded enumerationMembers = 5;
+    optional SDOBaseTypeExpanded supersededBy = 6;
+    repeated SDOBaseTypeExpanded supersedes = 7;
+}
+
+message SDOPropertyExpanded {
+    required string id = 1;
+    repeated SDOTermExpanded termdescriptor = 2;
+    repeated SDOBaseTypeExpanded domainIncludes = 3;
+    repeated SDOBaseTypeExpanded rangeIncludes = 4;
+    optional SDOPropertyExpanded supersededBy = 5;
+    repeated SDOPropertyExpanded supersedes = 6;
+}
+
+message SDOEnumerationValueExpanded {
+    required string id = 1;
+    repeated SDOTermExpanded termdescriptor = 2;
+    required SDOBaseTypeExpanded enumerationParent = 3;
+    optional SDOEnumerationValueExpanded supersededBy = 4;
+    repeated SDOEnumerationValueExpanded supersedes = 5;
+}
+
+message SDOReferenceExpanded {
+    required string id = 1;
+    repeated SDOTermExpanded termdescriptor = 2;
+}
+
+
+
+
 
 
