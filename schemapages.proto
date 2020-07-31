@@ -15,10 +15,10 @@ message SDOTerm {
     required string uri = 2;
     required string label = 4;
 
-    message BreadCrumb {
-        repeated string breadcrumb = 1;
+    message SuperPath {
+        repeated string superPath = 1;
     }
-    repeated BreadCrumb breadcrumbs = 6;
+    repeated SuperPath superPaths = 6;
     
     repeated string acknowledgements = 5;
     required string comment = 7;
@@ -62,6 +62,7 @@ message SDOEnumeration {
     repeated string properties = 3;
     repeated string allProperties = 4;
     repeated string expectedTypeFor = 5;
+    repeated string enumerationMembers = 6;
 }
 
 message SDOEnumerationValue {

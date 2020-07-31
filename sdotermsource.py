@@ -135,8 +135,7 @@ class SdoTermSource():
         self.term.supersededBy = self.getSupersededBy()
         self.term.supersedes = self.getSupersedes()
         self.term.termStack = self.getTermStack()
-        self.getParentPaths() #MUST be called after supers has been added to self.term
-        self.term.breadcrumbs = self.getParentPaths()
+        self.term.superPaths = self.getParentPaths() #MUST be called after supers has been added to self.term
         
         #Class (Type) Building
         if self.ttype == SdoTerm.TYPE or self.ttype == SdoTerm.DATATYPE or self.ttype == SdoTerm.ENUMERATION:
@@ -559,13 +558,13 @@ class SdoTermSource():
         
         
     @staticmethod
-    def getTerm(termId,refresh=False,createReference=False):
+    def getTerm(termId,expanded=False,refresh=False,createReference=False):
         #log.info("getTerm(%s,%s,%s)" % (termId,refresh,createReference))
         with TERMSLOCK:
-            return SdoTermSource._getTerm(termId,refresh=refresh,createReference=createReference)
+            return SdoTermSource._getTerm(termId,expanded=expanded,refresh=refresh,createReference=createReference)
 
     @staticmethod
-    def _getTerm(termId,refresh=False,createReference=False):
+    def _getTerm(termId,expanded=False,refresh=False,createReference=False):
 
         if not termId:
             return None
@@ -611,7 +610,48 @@ class SdoTermSource():
             else:
                 log.debug("No definition of term %s" % fullId)
             term = term.term
+        if expanded:
+            term = expandTerm(term)
         return term
+
+    @staticmethod
+    def expandTerm(term):
+        
+        term.expanded = True
+        term.subs = SdoTermSource.termsFromIds(term.subs)
+        term.supers = SdoTermSource.termsFromIds(term.supers)
+        term.termStack = SdoTermSource.termsFromIds(term.termStack)
+        
+        if term.termType == SdoTerm.TYPE or term.termType == SdoTerm.DATATYPE:
+            term.properties = SdoTermSource.termsFromIds(term.properties)
+            term.allProperties = SdoTermSource.termsFromIds(term.allProperties)
+            term.expectedTypeFor = SdoTermSource.termsFromIds(term.expectedTypeFor)
+        elif term.termType == SdoTerm.ENUMERATION:
+            term.properties = SdoTermSource.termsFromIds(term.properties)
+            term.allProperties = SdoTermSource.termsFromIds(term.allProperties)
+            term.expectedTypeFor = SdoTermSource.termsFromIds(term.expectedTypeFor)
+            term.enumerationMembers = SdoTermSource.termsFromIds(term.enumerationMembers)
+        elif term.termType == SdoTerm.ENUMERATIONVALUE:
+            term.enumerationParent = SdoTermSource.termFromId(term.enumerationParent)
+        elif term.termType == SdoTerm.PROPERTY:
+            term.domainIncludes = SdoTermSource.termsFromIds(term.domainIncludes)
+            term.rangeIncludes = SdoTermSource.termsFromIds(term.rangeIncludes)
+        
+        return term
+    
+    @staticmethod
+    def termFromId(id=""):
+        ids = termsFromIds([id])
+        if len(ids):
+            return ids[0]
+        return None
+        
+    @staticmethod
+    def termsFromIds(ids=[]):
+        ret = []
+        for i in ids:
+            ret[i] = SdoTermSource._getTerm(i,expanded=False)
+        return ret
 
     @staticmethod
     def termsFromResults(res,termId=None):

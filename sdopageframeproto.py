@@ -83,6 +83,7 @@ def term2protomsg(termid):
         msg.properties.extend(term.properties)
         msg.allProperties.extend(term.allProperties)
         msg.expectedTypeFor.extend(term.expectedTypeFor)
+        msg.enumerationMembers.extend(term.enumerationMembers)
     elif term.termType == SdoTerm.ENUMERATIONVALUE:
         msg.enumerationParent = term.enumerationParent
     elif term.termType == SdoTerm.REFERENCE:

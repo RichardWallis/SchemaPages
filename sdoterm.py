@@ -22,13 +22,14 @@ class SdoTerm():
     REFERENCE = "Reference"
     
     def __init__(self,termType,Id,uri,label):
+        self.expanded = False
         self.termType = termType
         self.uri = uri
         self.id = Id
         self.label = label
         
         self.acknowledgements = []
-        self.breadcrumbs = []
+        self.superPaths = []
         self.comment = ""
         self.equivalents = []
         self.examples = []

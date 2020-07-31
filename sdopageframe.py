@@ -19,7 +19,7 @@ print ("Types Count: %s" % len(SdoTermSource.getAllTypes(expanded=False)))
 print ("Properties Count: %s" % len(SdoTermSource.getAllProperties(expanded=False)))
 
 
-term = SdoTermSource.getTerm("False")
+term = SdoTermSource.getTerm("Book")
 
 print("")
 print("TYPE: %s" % term.termType)
@@ -27,7 +27,7 @@ print("URI: %s" % term.uri)
 print("ID: %s" % term.id)
 print("LABEL: %s" % term.label)
 print("")
-print("breadcrumbs: %s" % term.breadcrumbs)
+print("superPaths: %s" % term.superPaths)
 print("comment: %s" % term.comment)
 print("equivalents: %s" % term.equivalents)
 print("examples: %s" % term.examples)
