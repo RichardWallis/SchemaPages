@@ -63,22 +63,24 @@ def term2protomsg(termid):
     msgterm.pending = term.pending
     msgterm.retired = term.retired
     msgterm.sources.extend(term.sources)
-    msgterm.subs.extend(term.subs)
-    msgterm.supers.extend(term.supers)
 
 
     if term.termType == SdoTerm.TYPE or term.termType == SdoTerm.DATATYPE or term.termType == SdoTerm.ENUMERATION:
         msg.properties.extend(term.properties)
         msg.expectedTypeFor.extend(term.expectedTypeFor)
+        msg.termStack.extend(term.termStack)
+        msg.subs.extend(term.subs)
+        msg.supers.extend(term.supers)
+        msg.supersedes.extend(term.supersedes)
         if term.termType == SdoTerm.ENUMERATION:
             msg.enumerationMembers.extend(term.enumerationMembers)
-        msg.supersedes.extend(term.supersedes)
-        msg.termStack.extend(term.termStack)
     elif term.termType == SdoTerm.PROPERTY:
         msg.domainIncludes.extend(term.domainIncludes)
         msg.rangeIncludes.extend(term.rangeIncludes)
         msg.supersedes.extend(term.supersedes)
         msg.termStack.extend(term.termStack)
+        msg.subs.extend(term.subs)
+        msg.supers.extend(term.supers)
     elif term.termType == SdoTerm.ENUMERATIONVALUE:
         msg.enumerationParent = term.enumerationParent
         msg.supersedes.extend(term.supersedes)

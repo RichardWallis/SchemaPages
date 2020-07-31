@@ -27,8 +27,6 @@ message SDOTerm {
     required bool pending = 9;
     required bool retired = 10;
     repeated string sources = 11;
-    repeated string subs = 12;
-    repeated string supers = 13;
 }
 
 message SDOBaseType {
@@ -39,6 +37,8 @@ message SDOBaseType {
     repeated string enumerationMembers = 5;
     optional string supersededBy = 6;
     repeated string supersedes = 7;
+    repeated string subs = 12;
+    repeated string supers = 13;
     repeated string termStack = 8;
 }
 
@@ -49,6 +49,8 @@ message SDOProperty {
     repeated string rangeIncludes = 4;
     optional string supersededBy = 5;
     repeated string supersedes = 6;
+    repeated string subs = 12;
+    repeated string supers = 13;
     repeated string termStack = 8;
 }
 
@@ -78,9 +80,6 @@ message SDOTermExpanded {
     required bool pending = 8;
     required bool retired = 9;
     repeated string sources = 10;
-    repeated SDOBaseTypeExpanded subs = 11;
-    repeated SDOBaseTypeExpanded supers = 12;
-    repeated SDOBaseTypeExpanded termStack = 13;
 }
 
 message SDOBaseTypeExpanded {
@@ -89,6 +88,9 @@ message SDOBaseTypeExpanded {
     repeated SDOPropertyExpanded properties = 3;
     repeated SDOBaseTypeExpanded expectedTypeFor = 4;
     repeated SDOEnumerationValueExpanded enumerationMembers = 5;
+    repeated SDOBaseTypeExpanded subs = 11;
+    repeated SDOBaseTypeExpanded supers = 12;
+    repeated SDOBaseTypeExpanded termStack = 13;
     optional SDOBaseTypeExpanded supersededBy = 6;
     repeated SDOBaseTypeExpanded supersedes = 7;
 }
@@ -98,6 +100,9 @@ message SDOPropertyExpanded {
     repeated SDOTermExpanded termdescriptor = 2;
     repeated SDOBaseTypeExpanded domainIncludes = 3;
     repeated SDOBaseTypeExpanded rangeIncludes = 4;
+    repeated SDOPropertyExpanded subs = 11;
+    repeated SDOPropertyExpanded supers = 12;
+    repeated SDOPropertyExpanded termStack = 13;
     optional SDOPropertyExpanded supersededBy = 5;
     repeated SDOPropertyExpanded supersedes = 6;
 }
