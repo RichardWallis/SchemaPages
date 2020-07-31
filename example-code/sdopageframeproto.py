@@ -33,6 +33,20 @@ sdotypemap = {
     SdoTerm.REFERENCE: schemapages_pb2.TermType.REFERENCE
 }
 
+def termdescriptorPopulate(termdesc,term):
+    termdesc.termType = sdotypemap[term.termType]
+    termdesc.uri = term.uri
+    termdesc.label = term.label
+    termdesc.acknowledgements.extend(term.acknowledgements)
+    for i in term.superPaths:
+        sp = termdesc.superPaths.add()
+        sp.superPath.extend(i)
+    termdesc.comment = term.comment
+    termdesc.equivalents.extend(term.equivalents)
+    termdesc.pending = term.pending
+    termdesc.retired = term.retired
+    termdesc.sources.extend(term.sources)
+
 def term2protomsg(termid):
     term = SdoTermSource.getTerm(termid)
     if term.termType == SdoTerm.TYPE or term.termType == SdoTerm.DATATYPE or term.termType == SdoTerm.ENUMERATION:
@@ -50,20 +64,7 @@ def term2protomsg(termid):
     msg.id = term.id
 
     msgterm = msg.termdescriptor.add()
-
-    msgterm.termType = sdotypemap[term.termType]
-    msgterm.uri = term.uri
-    msgterm.label = term.label
-    msgterm.acknowledgements.extend(term.acknowledgements)
-    for i in term.superPaths:
-        sp = msgterm.superPaths.add()
-        sp.superPath.extend(i)
-    msgterm.comment = term.comment
-    msgterm.equivalents.extend(term.equivalents)
-    msgterm.pending = term.pending
-    msgterm.retired = term.retired
-    msgterm.sources.extend(term.sources)
-
+    termdescriptorPopulate(msgterm,term)
 
     if term.termType == SdoTerm.TYPE or term.termType == SdoTerm.DATATYPE or term.termType == SdoTerm.ENUMERATION:
         msg.properties.extend(term.properties)
