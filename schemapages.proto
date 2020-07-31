@@ -34,7 +34,7 @@ message SDOTerm {
     repeated string termStack = 16;
 }
 
-message SDOType {
+message SDOBaseType {
     required string id = 1;
     repeated SDOTerm termdescriptor = 2;
     repeated string properties = 3;

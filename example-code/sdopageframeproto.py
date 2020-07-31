@@ -36,7 +36,7 @@ sdotypemap = {
 def term2protomsg(termid):
     term = SdoTermSource.getTerm(termid)
     if term.termType == SdoTerm.TYPE or term.termType == SdoTerm.DATATYPE or term.termType == SdoTerm.ENUMERATION:
-        msg = schemapages_pb2.SDOType()
+        msg = schemapages_pb2.SDOBaseType()
     elif term.termType == SdoTerm.PROPERTY:
         msg = schemapages_pb2.SDOProperty()
     elif term.termType == SdoTerm.ENUMERATIONVALUE:
