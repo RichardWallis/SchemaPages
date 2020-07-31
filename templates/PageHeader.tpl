@@ -41,6 +41,7 @@
     <h1>{{ term.label }}</h1>
     <h3>A Schema.org {{ TERMTYPE }}</h3>
     {% if term.pending %}<strong>Note:</strong> <span style="color: ff0000;">This term is pending in the vocabulary.</span>{% endif %}
+    <div><em>Canonical URI: {{term.uri}}</em></div>
     <div class="breadcrumbs>"
     {% for breadcrumb in term.breadcrumbs %}
         {% for crumb in breadcrumb %} {%if loop.length > 1 %}{% if not loop.first %}-> {% endif %}{{ crumb }}{% endif %}{% endfor %}
