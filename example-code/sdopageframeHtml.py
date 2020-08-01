@@ -59,16 +59,18 @@ def templateRender(term):
 terms = SdoTermSource.getAllTerms()
 print("Processing %s terms" % len(terms))
 
-term = SdoTermSource.getTerm("Permit",expanded=True)
-pageout = templateRender(term)
+#term = SdoTermSource.getTerm("Permit",expanded=True)
+#pageout = templateRender(term)
 
-print(pageout)
+#print(pageout)
 
-"""import timeit
+terms = ["Permit"]
+
+import timeit
 start = timeit.timeit()
 for t in terms:
     tic = timeit.timeit()
-    term = SdoTermSource.getTerm(t)
+    term = SdoTermSource.getTerm(t,expanded=True)
     #term = SdoTermSource.getTerm("Book")
     pageout = templateRender(term)
     filename = "siteout/" + term.id +".html"
@@ -79,6 +81,6 @@ for t in terms:
     log.info("Term: %s - %s" % (t, toc -tic))
     
 stop = timeit.timeit()
-print ("All terms took %s seconds" % stop - start)"""
+print ("All terms took %s seconds" % (stop - start))
 
 
