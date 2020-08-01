@@ -38,7 +38,7 @@ def templateRender(term):
     }
     psge=None
     if term.termType == SdoTerm.TYPE:
-        page = "TypePage.tpl"
+        page = "TypePageEx.tpl"
     elif term.termType == SdoTerm.PROPERTY:
         page = "PropertyPage.tpl"
     elif term.termType == SdoTerm.ENUMERATION:
@@ -58,7 +58,13 @@ def templateRender(term):
     
 terms = SdoTermSource.getAllTerms()
 print("Processing %s terms" % len(terms))
-import timeit
+
+term = SdoTermSource.getTerm("Permit",expanded=True)
+pageout = templateRender(term)
+
+print(pageout)
+
+"""import timeit
 start = timeit.timeit()
 for t in terms:
     tic = timeit.timeit()
@@ -73,6 +79,6 @@ for t in terms:
     log.info("Term: %s - %s" % (t, toc -tic))
     
 stop = timeit.timeit()
-print ("All terms took %s seconds" % stop - start)
+print ("All terms took %s seconds" % stop - start)"""
 
 
