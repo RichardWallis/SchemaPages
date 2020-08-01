@@ -22,6 +22,7 @@ from localmarkdown import Markdown
 VOCABURI="https://schema.org/"
 CORE    = "core"
 TERMS={}
+EXPANDEDTERMS={}
 TERMSLOCK = threading.Lock()
 SORTLOCK = threading.Lock()
 RDFLIBLOCK = threading.Lock()
@@ -292,12 +293,12 @@ class SdoTermSource():
         return self.supers
     def getTermStack(self):
         if not self.termStack:
-            self.termStack = [self.id]
+            self.termStack = []
             for sup in self.getSupers():
                 s = SdoTermSource._getTerm(sup,createReference=True)
+                self.termStack.append(s.id)
                 if s.termStack:
-                    self.termStack.extend(s.termStack)
-
+                    self.termStack.extend(s.termStack)                
             stack = []
             for t in reversed(self.termStack):
                 if t not in stack:
@@ -514,6 +515,12 @@ class SdoTermSource():
             cstack = []
         self._pstacks.append(cstack)
         self._getParentPaths(self.term,cstack)
+
+        if self.ttype == SdoTerm.PROPERTY:
+            for s in self._pstacks:
+                s.insert(0,"Property")
+                s.insert(0,"Thing")
+        
         return self._pstacks
         
     def _getParentPaths(self, term, cstack):
@@ -609,31 +616,31 @@ class SdoTermSource():
                 log.debug("No definition of term %s" % fullId)
             term = term.term
         if expanded and not term.expanded:
-            term = SdoTermSource.expandTerm(term)
+            exterm = EXPANDEDTERMS.get(fullId,None)
+            if not exterm:
+                exterm = SdoTermSource.expandTerm(term)
+                EXPANDEDTERMS[fullId] = exterm
+            term = exterm
+                
         return term
 
     @staticmethod
     def expandTerm(term,depth=0):
+        
+        import copy
+        term = copy.copy(term)
+        
+        log.info("Expanding %s" % term.id)
 
         if not term.expanded:
             term.expanded = True
-            term.subs = SdoTermSource.termsFromIds(term.subs)
-            term.supers = SdoTermSource.termsFromIds(term.supers)
             term.termStack = SdoTermSource.termsFromIds(term.termStack)
         
-            if term.termType == SdoTerm.TYPE or term.termType == SdoTerm.DATATYPE:
+            if term.termType == SdoTerm.TYPE or term.termType == SdoTerm.DATATYPE or term.termType == SdoTerm.ENUMERATION:
+                log.info("Mapping props for %s" % term.id)
                 term.properties = SdoTermSource.termsFromIds(term.properties)
                 term.expectedTypeFor = SdoTermSource.termsFromIds(term.expectedTypeFor)
-            elif term.termType == SdoTerm.ENUMERATION:
-                term.properties = SdoTermSource.termsFromIds(term.properties)
-                term.expectedTypeFor = SdoTermSource.termsFromIds(term.expectedTypeFor)
-                term.enumerationMembers = SdoTermSource.termsFromIds(term.enumerationMembers)
-            elif term.termType == SdoTerm.ENUMERATIONVALUE:
-                term.enumerationParent = SdoTermSource.termFromId(term.enumerationParent)
-            elif term.termType == SdoTerm.PROPERTY:
-                term.domainIncludes = SdoTermSource.termsFromIds(term.domainIncludes)
-                term.rangeIncludes = SdoTermSource.termsFromIds(term.rangeIncludes)
-            
+
             if not depth: #Expand the indivdual terms in the terms termstack but prevent recursion further.
                 stack = []
                 for t in term.termStack:
@@ -807,6 +814,10 @@ class SdoTermSource():
         g.bind("owl","http://www.w3.org/2002/07/owl#")
         g.bind("dc","http://purl.org/dc/elements/1.1/")
         g.bind("dct","http://purl.org/dc/terms/")
+        
+        TERMS={} #Clear cache
+        EXPANDEDTERMS={}
+        
         
     
     
