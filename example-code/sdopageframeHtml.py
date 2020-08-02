@@ -1,4 +1,6 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3
+# -*- coding: UTF-8 -*-
+
 import sys
 import os
 sys.path.append( os.getcwd() )
@@ -33,7 +35,7 @@ def templateRender(term):
         'sitename': "SchemaPages",
         'menu_sel': "Schemas",
         'home_page': "False",
-        'href_prefix': "/",
+        'href_prefix': "",
         'term': term
     }
     psge=None
@@ -64,7 +66,7 @@ print("Processing %s terms" % len(terms))
 
 #print(pageout)
 
-terms = ["Permit"]
+terms = ["Permit","Thing","CreativeWork","Audiobook","Recommendation"]
 
 import timeit
 start = timeit.timeit()

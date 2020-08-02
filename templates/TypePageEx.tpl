@@ -16,6 +16,9 @@
     <div id="mainContent">
     {% include 'InfoBlock.tpl' with context %}
     {% include 'PropDefs.tpl' with context %}
+    {% include 'TargetFor.tpl' with context %}
+	{% set SUBLABEL = "More specific Types" %}
+    {% include 'Subs.tpl' with context %}
     </div> <!-- mainContent -->
 </body>
 </html>
