@@ -151,6 +151,8 @@ class SdoTermSource():
             self.term.rangeIncludes = self.getRanges()
         elif self.ttype == SdoTerm.ENUMERATIONVALUE:
             pass
+        elif self.ttype == SdoTerm.REFERENCE:
+            self.term.comment = self.getComment()
         
         
         
@@ -252,23 +254,19 @@ class SdoTermSource():
             objs = self.loadObjects("dc:source")
             objs += self.loadObjects("dct:source") #TODO Findout why dc:source in rdf files cets turned into dct:source when loaded.
             objs += self.loadObjects("schema:source") #To accept later ttl versions.
-            for obj in objs:
-                term = SdoTermSource._getTerm(obj,createReference=True)
-                self.srcaks.append(term)
-                
             self.sources = []
             self.aks = []
+            for obj in objs:
+                obj = str(obj)
+                term = SdoTermSource._getTerm(obj,createReference=True)
+
             #An aknowledgement is a 'source' with a comment
             #A source is a source without a comment
-            if len(self.srcaks):
-                for ao in self.srcaks:
-                    acks = ao.comment
-                    if len(acks):
-                        for ack in acks:
-                            self.aks.append(ack)
-                    else:
-                        self.sources.append(ao.uri)
-
+                if term and term.comment and len(term.comment):
+                    self.aks.append(term.comment)
+                else:
+                    self.sources.append(obj)
+                self.srcaks.append(obj)                
         return self.srcaks
     def getSources(self):
         if not self.sources:
@@ -413,7 +411,7 @@ class SdoTermSource():
             buf.append  (Markdown.parse(com,wpre=wpre))
         ret = ''.join(buf)
         if not len(ret):
-            ret = "-"
+            ret = ""
         self.comment = ret
         
         

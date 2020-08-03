@@ -66,7 +66,7 @@ print("Processing %s terms" % len(terms))
 
 #print(pageout)
 
-terms = ["Permit","Thing","about","CreativeWork","Audiobook","Recommendation","EBook","BookFormatType"]
+terms = ["Permit","Thing","about","CreativeWork","MonetaryAmount","LinkRole","EBook","BookFormatType"]
 
 
 import time,datetime

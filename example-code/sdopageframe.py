@@ -26,7 +26,7 @@ print ("Types Count: %s" % len(SdoTermSource.getAllTypes(expanded=False)))
 print ("Properties Count: %s" % len(SdoTermSource.getAllProperties(expanded=False)))
 
 
-term = SdoTermSource.getTerm("BookFormatType")
+term = SdoTermSource.getTerm("MonetaryAmount")
 
 print("")
 print("TYPE: %s" % term.termType)
