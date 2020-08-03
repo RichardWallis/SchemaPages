@@ -6,7 +6,9 @@
     <br/>
     <div class="superPaths">
     {% for superPath in term.superPaths %}
-        {% for super in superPath %} {% if not loop.first %} -> {% endif %}<a href="{{href_prefix}}{{ super }}.html">{{ super }}</a>{% endfor %}
+        {% for super in superPath %} {% if not loop.first %}{% if not loop.last %} -> {% endif %}{% endif %}
+					{% if loop.last %}{% if TERMTYPE == "Enumeration Value" %} :: {% else %} -> {% endif %}{% endif %}
+					<a href="{{href_prefix}}{{ super }}.html">{{ super }}</a>{% endfor %}
         <br/>
     {% endfor %}
     </div>
