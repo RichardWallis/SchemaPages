@@ -26,7 +26,7 @@ print ("Types Count: %s" % len(SdoTermSource.getAllTypes(expanded=False)))
 print ("Properties Count: %s" % len(SdoTermSource.getAllProperties(expanded=False)))
 
 
-term = SdoTermSource.getTerm("Book")
+term = SdoTermSource.getTerm("BookFormatType")
 
 print("")
 print("TYPE: %s" % term.termType)
@@ -53,7 +53,6 @@ for stackElement in term.termStack:
   
 if term.termType == SdoTerm.TYPE or term.termType == SdoTerm.ENUMERATION:
     print("Properties: %s" % term.properties)
-    print("All properties: %s" % term.allProperties)
     print("Expected Type for: %s" % term.expectedTypeFor)
       
 if term.termType == SdoTerm.PROPERTY:

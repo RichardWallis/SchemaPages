@@ -1,4 +1,6 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3
+# -*- coding: UTF-8 -*-
+
 import sys
 import os
 sys.path.append( os.getcwd() )
@@ -33,18 +35,18 @@ def templateRender(term):
         'sitename': "SchemaPages",
         'menu_sel': "Schemas",
         'home_page': "False",
-        'href_prefix': "/",
+        'href_prefix': "",
         'term': term
     }
     psge=None
     if term.termType == SdoTerm.TYPE:
-        page = "TypePage.tpl"
+        page = "TypePageEx.tpl"
     elif term.termType == SdoTerm.PROPERTY:
         page = "PropertyPage.tpl"
     elif term.termType == SdoTerm.ENUMERATION:
-        page = "EnumerationPage.tpl"
+        page = "EnumerationPageEx.tpl"
     elif term.termType == SdoTerm.ENUMERATIONVALUE:
-        page = "EnumerationValuePage.tpl"
+        page = "EnumerationValuePageEx.tpl"
     elif term.termType == SdoTerm.DATATYPE:
         page = "DataTypePage.tpl"
     else:
@@ -58,21 +60,33 @@ def templateRender(term):
     
 terms = SdoTermSource.getAllTerms()
 print("Processing %s terms" % len(terms))
-import timeit
-start = timeit.timeit()
+
+#term = SdoTermSource.getTerm("Permit",expanded=True)
+#pageout = templateRender(term)
+
+#print(pageout)
+
+terms = ["Permit","Thing","about","CreativeWork","Audiobook","Recommendation","EBook","BookFormatType"]
+
+
+import time,datetime
+start = datetime.datetime.now()
+lastCount = 0
 for t in terms:
-    tic = timeit.timeit()
-    term = SdoTermSource.getTerm(t)
-    #term = SdoTermSource.getTerm("Book")
+    tic = datetime.datetime.now()
+    term = SdoTermSource.getTerm(t,expanded=True)
     pageout = templateRender(term)
+    #filename = "SchemaPages/siteout/" + term.id +".html"
     filename = "siteout/" + term.id +".html"
     f = open(filename,"w")
     f.write(pageout)
     f.close()
-    toc = timeit.timeit()
-    log.info("Term: %s - %s" % (t, toc -tic))
+    termsofar = len(SdoTermSource.termCache())
+    created = termsofar - lastCount
+    lastCount = termsofar
+    print("Term: %s (%d) - %s" % (t, created, str(datetime.datetime.now()-tic)))
     
-stop = timeit.timeit()
-print ("All terms took %s seconds" % stop - start)
+print ("All terms took %s seconds" % str(datetime.datetime.now()-start))
+
 
 

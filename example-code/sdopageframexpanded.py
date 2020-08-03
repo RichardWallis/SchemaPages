@@ -24,71 +24,61 @@ print ("Types Count: %s" % len(SdoTermSource.getAllTypes(expanded=False)))
 print ("Properties Count: %s" % len(SdoTermSource.getAllProperties(expanded=False)))
 
 
+
+def showTerm(term,ind=""):
+    print("")
+    print("%sID: %s" % (ind,term.id))
+    print("%sExpanded %s" %(ind,term.expanded))
+    print("%sTYPE: %s" % (ind,term.termType))
+    print("%sURI: %s" % (ind,term.uri))
+    print("%sLABEL: %s" % (ind,term.label))
+    print("")
+    print("%ssuperPaths: %s" % (ind,term.superPaths))
+    print("%scomment: %s" % (ind,term.comment))
+    print("%sequivalents: %s" % (ind,term.equivalents))
+    print("%sexamples: %s" % (ind,term.examples))
+    print("%spending: %s" % (ind,term.pending))
+    print("%sretired: %s" % (ind,term.retired))
+    print("%ssources: %s" % (ind,term.sources))
+    print("%sacknowledgements: %s" % (ind,term.acknowledgements))
+    print("%ssubs: %s" % (ind,term.subs))
+    print("%ssupers: %s" % (ind,term.supers))
+    print("%ssupersededBy: %s" % (ind,term.supersededBy))
+    print("%ssupersedes: %s" % (ind,term.supersedes))
+
+    if term.termType == SdoTerm.TYPE or term.termType == SdoTerm.ENUMERATION or term.termType == SdoTerm.DATATYPE:
+        if term.expanded:
+            print("%sProperties count %s" % (ind,len(term.properties)))
+            for p in term.properties:
+                showTerm(p,ind=ind +"   ")
+            print("%sExpected Type for count %s" % (ind,len(term.expectedTypeFor)))
+            for t in term.expectedTypeFor:
+                showTerm(t,ind=ind +"   ")
+        else:
+            print("%sProperties: %s" % (ind,term.properties))
+            print("%sExpected Type for: %s" % (ind,term.expectedTypeFor))
+
+    if term.termType == SdoTerm.PROPERTY:
+        print("%sDomain includes: %s" % (ind,term.domainIncludes))
+        print("%sRange includes: %s" % (ind,term.rangeIncludes))
+
+    if term.termType == SdoTerm.ENUMERATION:
+        print("%sEnumeration Members: %s" % (ind,term.enumerationMembers))
+    
+    
+    if term.termType == SdoTerm.ENUMERATIONVALUE:
+        print("%sParent Enumeration: %s" %  (ind,term.enumerationParent))
+    
+    if term.expanded:
+        print("%stermStack count: %s " % (ind,len(term.termStack)))
+        for t in term.termStack:
+            showTerm(t,ind=ind +"...")
+    else:
+        print("%stermStack: %s " % (ind,term.termStack))
+
 term = SdoTermSource.getTerm("Permit",expanded=True)
-
-print("")
-print("Expanded %s" %term.expanded)
-print("TYPE: %s" % term.termType)
-print("URI: %s" % term.uri)
-print("ID: %s" % term.id)
-print("LABEL: %s" % term.label)
-print("")
-print("superPaths: %s" % term.superPaths)
-print("comment: %s" % term.comment)
-print("equivalents: %s" % term.equivalents)
-print("examples: %s" % term.examples)
-print("pending: %s" % term.pending)
-print("retired: %s" % term.retired)
-print("sources: %s" % term.sources)
-print("acknowledgements:" % term.acknowledgements)
-if term.expanded:
-    print("Subs count: %s " % len(term.subs))
-    for t in term.subs:
-        print("   sub: %s" % t.id)
-else:
-    print("subs: %s" % term.subs)
-if term.expanded:
-    print("Supers count: %s " % len(term.supers))
-    for t in term.supers:
-        print("   super: %s" % t.id)
-else:
-    print("supers: %s" % term.supers)
-print("supersededBy: %s" % term.supersededBy)
-print("supersedes: %s" % term.supersedes)
-
-if term.expanded:
-    print("termStack count: %s " % len(term.termStack))
-    for t in term.termStack:
-        print("   stack: %s" % t.id)
-        for p in t.properties:
-            print("........prop %s %s" % (p.id,p.domainIncludes))
-
-#print("termStack: %s" % term.termStack)
-
-#for stackElement in term.termStack:
-#  print("Element: %s" % stackElement)
-  
-if term.termType == SdoTerm.TYPE or term.termType == SdoTerm.ENUMERATION:
-    print("Properties: %s" % term.properties)
-    print("Expected Type for: %s" % term.expectedTypeFor)
-      
-if term.termType == SdoTerm.PROPERTY:
-    print("Domain includes: %s" % term.domainIncludes)
-    print("Range includes: %s" % term.rangeIncludes)
-
-if term.termType == SdoTerm.ENUMERATION:
-    print("Enumeration Members: %s" % term.enumerationMembers)
+showTerm(term)
     
-    
-if term.termType == SdoTerm.ENUMERATIONVALUE:
-    print("Parent Enumeration: %s" %  term.enumerationParent)
-    
-for prop in term.properties:
-  if not term.expanded:
-    prop = SdoTermSource.getTerm(prop)
-  print("Prop: %s.  Pending: %s" % (prop.id,prop.pending))
-  print("   Expected Types: %s" % prop.rangeIncludes)
-  print("   Comment: %s" % prop.comment)
 
 
 

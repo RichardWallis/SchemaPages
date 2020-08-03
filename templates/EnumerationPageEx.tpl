@@ -11,19 +11,20 @@
     
 </head>
 <body>
-    {% set TERMTYPE = "Property" %}
+    {% set TERMTYPE = "Enumeration" %}
     {% include 'PageHeader.tpl' with context %}
     <div id="mainContent">
     {% include 'InfoBlock.tpl' with context %}
-    <div><h2>Values expected to be one of these types</h2>
-        {% for type in term.rangeIncludes %}<a href="{{href_prefix}}{{type}}">{{ type }}</a>{% if not loop.last %}, {% endif %}{% endfor %}
-    </div>
-    <div><h2>Used on these types</h2>
-        {% for type in term.domainIncludes %}<a href="{{href_prefix}}{{type}}">{{ type }}</a>{% if not loop.last %}, {% endif %}{% endfor %}
-    </div>
-    {% set SUBLABEL = "Sub-properties" %}
+    {% include 'PropDefs.tpl' with context %}
+    {% set INSERT = "and its enumeration members" %}
+	{% include 'TargetFor.tpl' with context %}
+    {% set SUBLABEL = "Enumeration members" %}
+    {% set SUBLIST = term.enumerationMembers %}
+    {% include 'Subs.tpl' with context %}
+    {% set SUBLABEL = "Enumeration Subtypes" %}
     {% set SUBLIST = term.subs %}
     {% include 'Subs.tpl' with context %}
 	{% include 'Ackblock.tpl' with context %}
+    </div> <!-- mainContent -->
 </body>
 </html>
