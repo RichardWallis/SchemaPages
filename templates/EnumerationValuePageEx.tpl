@@ -11,16 +11,13 @@
     
 </head>
 <body>
-    {% set TERMTYPE = "Type" %}
+    {% set TERMTYPE = "Enumeration Value" %}
     {% include 'PageHeader.tpl' with context %}
     <div id="mainContent">
     {% include 'InfoBlock.tpl' with context %}
-    {% include 'PropDefs.tpl' with context %}
-    {% include 'TargetFor.tpl' with context %}
-    {% set SUBLABEL = "More specific Types" %}
-    {% set SUBLIST = term.subs %}
-    {% include 'Subs.tpl' with context %}
-	{% include 'Ackblock.tpl' with context %}
+    <div>
+        <br/>A member of the <a href="{{href_prefix}}{{ term.enumerationParent }}.html">{{ term.enumerationParent }}</a> enumeration type.
+    </div>
     </div> <!-- mainContent -->
 </body>
 </html>

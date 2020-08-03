@@ -1,6 +1,6 @@
 {% for prop in term.expectedTypeFor %}
   {% if loop.first %}
-	<br/><div id="incoming">Instances of <a href="{{href_prefix}}{{term.id}}.html">{{term.id}}</a> may appear as a value for the following properties</div>
+	<br/><div id="incoming">Instances of <a href="{{href_prefix}}{{term.id}}.html">{{term.id}}</a> {{INSERT}} may appear as a value for the following properties</div>
 	<table class="definition-table">
     <thead><tr><tr><th>Property</th><th>On Types</th><th>Description</th></tr></thead>
   {% endif %}

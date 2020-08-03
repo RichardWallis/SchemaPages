@@ -44,9 +44,9 @@ def templateRender(term):
     elif term.termType == SdoTerm.PROPERTY:
         page = "PropertyPage.tpl"
     elif term.termType == SdoTerm.ENUMERATION:
-        page = "EnumerationPage.tpl"
+        page = "EnumerationPageEx.tpl"
     elif term.termType == SdoTerm.ENUMERATIONVALUE:
-        page = "EnumerationValuePage.tpl"
+        page = "EnumerationValuePageEx.tpl"
     elif term.termType == SdoTerm.DATATYPE:
         page = "DataTypePage.tpl"
     else:
@@ -66,23 +66,27 @@ print("Processing %s terms" % len(terms))
 
 #print(pageout)
 
-terms = ["Permit","Thing","CreativeWork","Audiobook","Recommendation"]
+terms = ["Permit","Thing","about","CreativeWork","Audiobook","Recommendation","EBook","BookFormatType"]
 
-import timeit
-start = timeit.timeit()
+
+import time,datetime
+start = datetime.datetime.now()
+lastCount = 0
 for t in terms:
-    tic = timeit.timeit()
+    tic = datetime.datetime.now()
     term = SdoTermSource.getTerm(t,expanded=True)
-    #term = SdoTermSource.getTerm("Book")
     pageout = templateRender(term)
+    #filename = "SchemaPages/siteout/" + term.id +".html"
     filename = "siteout/" + term.id +".html"
     f = open(filename,"w")
     f.write(pageout)
     f.close()
-    toc = timeit.timeit()
-    log.info("Term: %s - %s" % (t, toc -tic))
+    termsofar = len(SdoTermSource.termCache())
+    created = termsofar - lastCount
+    lastCount = termsofar
+    print("Term: %s (%d) - %s" % (t, created, str(datetime.datetime.now()-tic)))
     
-stop = timeit.timeit()
-print ("All terms took %s seconds" % (stop - start))
+print ("All terms took %s seconds" % str(datetime.datetime.now()-start))
+
 
 

@@ -11,13 +11,17 @@
     
 </head>
 <body>
-    {% set TERMTYPE = "Type" %}
+    {% set TERMTYPE = "Enumeration" %}
     {% include 'PageHeader.tpl' with context %}
     <div id="mainContent">
     {% include 'InfoBlock.tpl' with context %}
     {% include 'PropDefs.tpl' with context %}
-    {% include 'TargetFor.tpl' with context %}
-    {% set SUBLABEL = "More specific Types" %}
+    {% set INSERT = "and its enumeration members" %}
+	{% include 'TargetFor.tpl' with context %}
+    {% set SUBLABEL = "Enumeration members" %}
+    {% set SUBLIST = term.enumerationMembers %}
+    {% include 'Subs.tpl' with context %}
+    {% set SUBLABEL = "Enumeration Subtypes" %}
     {% set SUBLIST = term.subs %}
     {% include 'Subs.tpl' with context %}
 	{% include 'Ackblock.tpl' with context %}

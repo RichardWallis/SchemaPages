@@ -254,13 +254,12 @@ class SdoTermSource():
             objs += self.loadObjects("schema:source") #To accept later ttl versions.
             for obj in objs:
                 term = SdoTermSource._getTerm(obj,createReference=True)
-                sortedAddUnique(self.srcaks,term)
+                self.srcaks.append(term)
                 
             self.sources = []
             self.aks = []
             #An aknowledgement is a 'source' with a comment
             #A source is a source without a comment
-            #log.info(">>>>> getSourcesAndAcks %s" % len(self.srcaks)) 
             if len(self.srcaks):
                 for ao in self.srcaks:
                     acks = ao.comment
@@ -630,14 +629,14 @@ class SdoTermSource():
         import copy
         term = copy.copy(term)
         
-        log.info("Expanding %s" % term.id)
+        #log.info("Expanding %s" % term.id)
 
         if not term.expanded:
             term.expanded = True
             term.termStack = SdoTermSource.termsFromIds(term.termStack)
         
             if term.termType == SdoTerm.TYPE or term.termType == SdoTerm.DATATYPE or term.termType == SdoTerm.ENUMERATION:
-                log.info("Mapping props for %s" % term.id)
+                #log.info("Mapping props for %s" % term.id)
                 term.properties = SdoTermSource.termsFromIds(term.properties)
                 term.expectedTypeFor = SdoTermSource.termsFromIds(term.expectedTypeFor)
 
@@ -852,6 +851,10 @@ class SdoTermSource():
             ret.append(term.getId())
         return ret
 
+    @staticmethod
+    def termCache():
+        return TERMS
+
 def toFullId(termId):
 
     if not	':' in termId: #Includes full path or namespaces
@@ -870,12 +873,6 @@ def uriWrap(id):
     	id = "<%s>" % id
     return id
         
-def sortedAddUnique(lst,term):
-    if term not in lst:
-        with SORTLOCK:
-            lst.append(term)
-            lst.sort(key=lambda u: u.id,reverse=False)
-
 LAYERPATTERN = None
 def layerFromUri(uri):
     global LAYERPATTERN
