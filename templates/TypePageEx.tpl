@@ -17,7 +17,8 @@
     {% include 'InfoBlock.tpl' with context %}
     {% include 'PropDefs.tpl' with context %}
     {% include 'TargetFor.tpl' with context %}
-	{% set SUBLABEL = "More specific Types" %}
+    {% set SUBLABEL = "More specific Types" %}
+    {% set SUBLIST = term.subs %}
     {% include 'Subs.tpl' with context %}
     </div> <!-- mainContent -->
 </body>

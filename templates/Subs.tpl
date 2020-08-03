@@ -1,4 +1,4 @@
-{% for sub in term.subs %}
+{% for sub in SUBSLIST %}
     {% if loop.first %}
      <br/><b><a  id="subtypes" title="Link: #subtypes" href="#subtypes" class="clickableAnchor" >More specific Types</a></b><ul>
     {% endif %}
