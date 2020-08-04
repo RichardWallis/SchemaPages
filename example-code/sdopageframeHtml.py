@@ -26,11 +26,23 @@ SdoTermSource.setQueryGraph(termgraph)
 #print ("Types Count: %s" % len(SdoTermSource.getAllTypes(expanded=False)))
 #print ("Properties Count: %s" % len(SdoTermSource.getAllProperties(expanded=False)))
 
+###################################################
+#JINJA INITIALISATION
+###################################################
 
-jenv = jinja2.Environment(loader=jinja2.FileSystemLoader("templates"),
+#Setup Jinja2 environment - template(s) location etc.
+#TEMPLATESFOLDER = "SchemaPages/templates"
+TEMPLATESDIR = "templates"
+
+jenv = jinja2.Environment(loader=jinja2.FileSystemLoader(TEMPLATESDIR),
         extensions=['jinja2.ext.autoescape'], autoescape=True, cache_size=0)
 
+### Template rendering for term definitions
+#   term: SDO Term definition either simple (strings only)
+#         or expanded (nested definitions for related terms)
+
 def templateRender(term):
+    #Basic varibles configuring UI
     tvars = {
         'sitename': "SchemaPages",
         'menu_sel': "Schemas",
@@ -38,25 +50,41 @@ def templateRender(term):
         'href_prefix': "",
         'term': term
     }
-    psge=None
-    if term.termType == SdoTerm.TYPE:
-        page = "TypePageEx.tpl"
-    elif term.termType == SdoTerm.PROPERTY:
-        page = "PropertyPage.tpl"
-    elif term.termType == SdoTerm.ENUMERATION:
-        page = "EnumerationPageEx.tpl"
-    elif term.termType == SdoTerm.ENUMERATIONVALUE:
-        page = "EnumerationValuePageEx.tpl"
-    elif term.termType == SdoTerm.DATATYPE:
-        page = "DataTypePageEx.tpl"
+    
+    page=None
+
+    if term.expanded:
+      if term.termType == SdoTerm.TYPE:
+          page = "TypePageEx.tpl"
+      elif term.termType == SdoTerm.PROPERTY:
+          page = "PropertyPage.tpl"
+      elif term.termType == SdoTerm.ENUMERATION:
+          page = "EnumerationPageEx.tpl"
+      elif term.termType == SdoTerm.ENUMERATIONVALUE:
+          page = "EnumerationValuePageEx.tpl"
+      elif term.termType == SdoTerm.DATATYPE:
+          page = "DataTypePageEx.tpl"
     else:
+      if term.termType == SdoTerm.TYPE:
+          page = "TypePage.tpl"
+      elif term.termType == SdoTerm.PROPERTY:
+          page = "PropertyPage.tpl"
+      elif term.termType == SdoTerm.ENUMERATION:
+          page = "EnumerationPage.tpl"
+      elif term.termType == SdoTerm.ENUMERATIONVALUE:
+          page = "EnumerationValuePage.tpl"
+      elif term.termType == SdoTerm.DATATYPE:
+          page = "DataTypePage.tpl"
+    if not page:
         print("Invalid term type: %s" % term.termType)
         return
-        
-    
+ 
     template = jenv.get_template(page)
-    #print(template.render(tvars))
     return template.render(tvars)
+
+###################################################
+#JINJA INITIALISATION - End
+###################################################
     
 terms = SdoTermSource.getAllTerms()
 print("Processing %s terms" % len(terms))
@@ -73,20 +101,26 @@ import time,datetime
 start = datetime.datetime.now()
 lastCount = 0
 for t in terms:
-    tic = datetime.datetime.now()
+    tic = datetime.datetime.now() #diagnostics
+
     term = SdoTermSource.getTerm(t,expanded=True)
     pageout = templateRender(term)
-    #filename = "SchemaPages/siteout/" + term.id +".html"
-    filename = "siteout/" + term.id +".html"
+    filename = "SchemaPages/siteout/" + term.id +".html"
     f = open(filename,"w")
     f.write(pageout)
     f.close()
-    termsofar = len(SdoTermSource.termCache())
-    created = termsofar - lastCount
-    lastCount = termsofar
-    print("Term: %s (%d) - %s" % (t, created, str(datetime.datetime.now()-tic)))
+
+    #diagnostics ##########################################
+    termsofar = len(SdoTermSource.termCache()) #diagnostics
+    termscreated = termsofar - lastCount       #diagnostics
+    lastCount = termsofar                      #diagnostics
+    print("Term: %s (%d) - %s" % (t, termscreated, str(datetime.datetime.now()-tic))) #diagnostics
+    #      Note: (%d) = number of individual newly created (not cached) term definitions to
+    #            build this expanded definition. ie. All Properties associated with a Type, etc.
     
-print ("All terms took %s seconds" % str(datetime.datetime.now()-start))
+print()
+print ("All terms took %s seconds" % str(datetime.datetime.now()-start)) #diagnostics
+
 
 
 
