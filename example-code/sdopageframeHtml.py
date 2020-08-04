@@ -55,26 +55,26 @@ def templateRender(term):
 
     if term.expanded:
       if term.termType == SdoTerm.TYPE:
-          page = "TypePageEx.tpl"
+          page = "expanded/TypePageEx.tpl"
       elif term.termType == SdoTerm.PROPERTY:
-          page = "PropertyPage.tpl"
+          page = "expanded/PropertyPageEx.tpl"
       elif term.termType == SdoTerm.ENUMERATION:
-          page = "EnumerationPageEx.tpl"
+          page = "expanded/EnumerationPageEx.tpl"
       elif term.termType == SdoTerm.ENUMERATIONVALUE:
-          page = "EnumerationValuePageEx.tpl"
+          page = "expanded/EnumerationValuePageEx.tpl"
       elif term.termType == SdoTerm.DATATYPE:
-          page = "DataTypePageEx.tpl"
+          page = "expanded/DataTypePageEx.tpl"
     else:
       if term.termType == SdoTerm.TYPE:
-          page = "TypePage.tpl"
+          page = "simple/TypePage.tpl"
       elif term.termType == SdoTerm.PROPERTY:
-          page = "PropertyPage.tpl"
+          page = "simple/PropertyPage.tpl"
       elif term.termType == SdoTerm.ENUMERATION:
-          page = "EnumerationPage.tpl"
+          page = "simple/EnumerationPage.tpl"
       elif term.termType == SdoTerm.ENUMERATIONVALUE:
-          page = "EnumerationValuePage.tpl"
+          page = "simple/EnumerationValuePage.tpl"
       elif term.termType == SdoTerm.DATATYPE:
-          page = "DataTypePage.tpl"
+          page = "simple/DataTypePage.tpl"
     if not page:
         print("Invalid term type: %s" % term.termType)
         return
@@ -105,7 +105,7 @@ for t in terms:
 
     term = SdoTermSource.getTerm(t,expanded=True)
     pageout = templateRender(term)
-    filename = "SchemaPages/siteout/" + term.id +".html"
+    filename = "siteoutExpanded/" + term.id +".html"
     f = open(filename,"w")
     f.write(pageout)
     f.close()

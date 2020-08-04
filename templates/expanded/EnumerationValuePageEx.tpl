@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<!-- Generated from TypePage.tpl -->
+<!-- Generated from EnumerationValuePageEx.tpl -->
 <head>
     <title>{{ term.label }} - {{ sitename }}</title>
     <meta charset="utf-8" >
@@ -11,7 +11,7 @@
     
 </head>
 <body>
-    {% set TERMTYPE = "Enumeration Value" %}
+    {% set TERMTYPE = "Enumeration Member" %}
     {% include 'PageHeader.tpl' with context %}
     <div id="mainContent">
     {% include 'InfoBlock.tpl' with context %}

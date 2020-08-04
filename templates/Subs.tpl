@@ -1,3 +1,5 @@
+<!-- List subs (Subtypes/subproperties/enumeration members/etc.) for Term -->
+
 {% for sub in SUBLIST %}
     {% if loop.first %}
      <br/><b><a  id="subtypes" title="Link: #subtypes" href="#subtypes" class="clickableAnchor" >{{SUBLABEL}}</a></b><ul>

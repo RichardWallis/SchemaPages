@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<!-- Generated from TypePage.tpl -->
+<!-- Generated from PropertyPageEx.tpl -->
 <head>
     <title>{{ term.label }} - {{ sitename }}</title>
     <meta charset="utf-8" >
@@ -11,16 +11,19 @@
     
 </head>
 <body>
-    {% set TERMTYPE = "Type" %}
+    {% set TERMTYPE = "Property" %}
     {% include 'PageHeader.tpl' with context %}
     <div id="mainContent">
     {% include 'InfoBlock.tpl' with context %}
-    {% include 'PropDefs.tpl' with context %}
-    {% include 'TargetFor.tpl' with context %}
-    {% set SUBLABEL = "More specific Types" %}
+    <div><h2>Values expected to be one of these types</h2>
+        {% for type in term.rangeIncludes %}<a href="{{href_prefix}}{{type}}">{{ type }}</a>{% if not loop.last %}, {% endif %}{% endfor %}
+    </div>
+    <div><h2>Used on these types</h2>
+        {% for type in term.domainIncludes %}<a href="{{href_prefix}}{{type}}">{{ type }}</a>{% if not loop.last %}, {% endif %}{% endfor %}
+    </div>
+    {% set SUBLABEL = "Sub-properties" %}
     {% set SUBLIST = term.subs %}
     {% include 'Subs.tpl' with context %}
 	{% include 'Ackblock.tpl' with context %}
-    </div> <!-- mainContent -->
 </body>
 </html>
