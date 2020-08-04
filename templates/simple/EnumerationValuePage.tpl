@@ -8,7 +8,7 @@
     {% set TERMTYPE = "Enumeration Value" %}
     {% include 'PageHeader.tpl' with context %}
     <div>
-        A member of the <a href="{{href_prefix}}{{ term.enumerationParent }}">{{ term.enumerationParent }}</a> enumeration type.
+        A member of the <a href="{{href_prefix}}{{ term.enumerationParent }}.html">{{ term.enumerationParent }}</a> enumeration type.
     </div>
 </body>
 </html>

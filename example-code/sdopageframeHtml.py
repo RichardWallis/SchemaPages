@@ -105,7 +105,7 @@ for t in terms:
 
     term = SdoTermSource.getTerm(t,expanded=True)
     pageout = templateRender(term)
-    filename = "siteoutExpanded/" + term.id +".html"
+    filename = "    /" + term.id +".html"
     f = open(filename,"w")
     f.write(pageout)
     f.close()

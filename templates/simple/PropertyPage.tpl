@@ -17,10 +17,10 @@
 	    {% include 'InfoBlock.tpl' with context %}
 
 	    <div><h2>Values expected to be one of these types</h2>
-	        {% for type in term.rangeIncludes %}<a href="{{href_prefix}}{{type}}">{{ type }}</a>{% if not loop.last %}, {% endif %}{% endfor %}
+	        {% for type in term.rangeIncludes %}<a href="{{href_prefix}}{{type}}.html">{{ type }}</a>{% if not loop.last %}, {% endif %}{% endfor %}
 	    </div>
 	    <div><h2>Used on these types</h2>
-	        {% for type in term.domainIncludes %}<a href="{{href_prefix}}{{type}}">{{ type }}</a>{% if not loop.last %}, {% endif %}{% endfor %}
+	        {% for type in term.domainIncludes %}<a href="{{href_prefix}}{{type}}.html">{{ type }}</a>{% if not loop.last %}, {% endif %}{% endfor %}
 	    </div>
 
 		<!-- List subproperties -->
