@@ -48,7 +48,7 @@ def templateRender(term):
     elif term.termType == SdoTerm.ENUMERATIONVALUE:
         page = "EnumerationValuePageEx.tpl"
     elif term.termType == SdoTerm.DATATYPE:
-        page = "DataTypePage.tpl"
+        page = "DataTypePageEx.tpl"
     else:
         print("Invalid term type: %s" % term.termType)
         return
@@ -66,7 +66,7 @@ print("Processing %s terms" % len(terms))
 
 #print(pageout)
 
-terms = ["Permit","Thing","about","CreativeWork","MonetaryAmount","LinkRole","EBook","BookFormatType"]
+terms = ["Text","DataType","PronounceableText","Thing","about","CreativeWork","MonetaryAmount","LinkRole","EBook","BookFormatType"]
 
 
 import time,datetime

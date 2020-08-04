@@ -369,7 +369,7 @@ class SdoTermSource():
                     if len(targets) and stopontarget:
                         break
                 ret = targets
-                
+        ret.sort()
         return ret
     def getEquivalents(self):
         if not self.equivalents:
@@ -512,17 +512,31 @@ class SdoTermSource():
             cstack = []
         self._pstacks.append(cstack)
         self._getParentPaths(self.term,cstack)
-
-        if self.ttype == SdoTerm.PROPERTY:
-            for s in self._pstacks:
-                s.insert(0,"Property")
-                s.insert(0,"Thing")
         
+        inserts = []
+        if self.ttype == SdoTerm.PROPERTY:
+            inserts = ["Property","Thing"]
+        elif self.ttype == SdoTerm.DATATYPE and self.id != "DataType":
+            inserts = ["DataType"]        
+        elif self.ttype == SdoTerm.TYPE:
+            base = self._pstacks[0][0]
+            if base != self.id:
+                basetype = SdoTermSource._getTerm(base)
+            else:
+                basetype = self.term
+            if basetype.termType == SdoTerm.DATATYPE:
+                inserts = ["DataType"]
+                
+        for ins in inserts:
+            for s in self._pstacks:
+                s.insert(0,ins)
+                
+            
         return self._pstacks
         
     def _getParentPaths(self, term, cstack):
-        if ":" in term.id:  #Suppress external class references
-            return
+        #if ":" in term.id:  #Suppress external class references
+            #ßreturn
 
         cstack.insert(0,term.id)
         tmpStacks = []
@@ -532,7 +546,7 @@ class SdoTermSource():
         if term.termType == SdoTerm.ENUMERATIONVALUE and term.enumerationParent:
             if term.enumerationParent not in supers:
                 supers.append(term.enumerationParent)
-    
+            
         if supers:
             for i in range(len(supers)):
                 if(i > 0):
@@ -542,9 +556,10 @@ class SdoTermSource():
 
             x=0
             for p in supers:
-                sup = SdoTermSource._getTerm(p)
-                self._getParentPaths(sup,tmpStacks[x])
-                x += 1
+                if not p.startswith("http"):
+                    sup = SdoTermSource._getTerm(p)
+                    self._getParentPaths(sup,tmpStacks[x])
+                    x += 1
             
 
     @staticmethod
