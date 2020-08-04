@@ -321,6 +321,8 @@ class SdoTermSource():
             allprops.extend(self.props)
             for t in self.getTermStack():
                 if t != self.id:
+                    if t == "Enumeration": 
+                        break
                     trm = SdoTermSource._getTerm(t,createReference=True)
                     if trm.termType == SdoTerm.TYPE or trm.termType == SdoTerm.DATATYPE or trm.termType == SdoTerm.ENUMERATION:
                         for p in trm.properties:
@@ -721,7 +723,7 @@ class SdoTermSource():
             supress = "FILTER NOT EXISTS { ?s dc:source ?term. }"
             
             
-        query = """SELECT ?term ?type ?label ?layer ?sup ?cat WHERE {
+        query = """SELECT DISTINCT ?term ?type ?label ?layer ?sup ?cat WHERE {
              ?term a ?type;
                 %s
                 %s
@@ -769,8 +771,6 @@ class SdoTermSource():
         TERMS={} #Clear cache
         EXPANDEDTERMS={}
         
-        
-    
     
     @staticmethod
     def query(q):
