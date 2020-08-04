@@ -53,6 +53,7 @@ for stackElement in term.termStack:
   
 if term.termType == SdoTerm.TYPE or term.termType == SdoTerm.ENUMERATION:
     print("Properties: %s" % term.properties)
+    print("All Properties: %s" % term.allproperties)
     print("Expected Type for: %s" % term.expectedTypeFor)
       
 if term.termType == SdoTerm.PROPERTY:

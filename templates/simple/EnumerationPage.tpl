@@ -16,10 +16,13 @@
     <div id="mainContent">
 	    {% include 'InfoBlock.tpl' with context %}
 
-	    <div><h2>Specific Properties</h2>
+	    <div><h2>Properties Specific to this Enumeration</h2>
 	        {% for prop in term.properties %}<a href="{{href_prefix}}{{prop}}.html">{{ prop }}</a>{% if not loop.last %}, {% endif %}{% endfor %}
 	    </div>
 		
+	    <div><h2>All Available Properties</h2>
+	        {% for prop in term.allproperties %}<a href="{{href_prefix}}{{prop}}.html">{{ prop }}</a>{% if not loop.last %}, {% endif %}{% endfor %}
+	    </div>
 	    <div>
 	        {% for type in term.expectedTypeFor %}
 	        {% if loop.first %}<h2>Expected Type For</h2>{% endif %}<a href="{{href_prefix}}{{type}}">{{ type }}</a>{% if not loop.last %}, {% endif %}{% endfor %}

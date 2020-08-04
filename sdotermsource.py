@@ -141,6 +141,7 @@ class SdoTermSource():
         #Class (Type) Building
         if self.ttype == SdoTerm.TYPE or self.ttype == SdoTerm.DATATYPE or self.ttype == SdoTerm.ENUMERATION:
             self.term.properties = self.getProperties(getall=False)
+            self.term.allproperties = self.getProperties(getall=True)
             self.term.expectedTypeFor = self.getTargetOf()
             if self.ttype == SdoTerm.ENUMERATION:
                 if not len(self.term.properties):
@@ -573,68 +574,6 @@ class SdoTermSource():
         return False   
         
         
-    @staticmethod
-    def getTerm(termId,expanded=False,refresh=False,createReference=False):
-        #log.info("getTerm(%s,%s,%s)" % (termId,refresh,createReference))
-        with TERMSLOCK:
-            return SdoTermSource._getTerm(termId,expanded=expanded,refresh=refresh,createReference=createReference)
-
-    @staticmethod
-    def _getTerm(termId,expanded=False,refresh=False,createReference=False):
-
-        if not termId:
-            return None
-        #log.info("GET: %s" % termId)
-        termId = str(termId)
-        fullId = toFullId(termId)
-        #log.info("_GETTERM termId %s full %s" % (termId,fullId))
-        term = TERMS.get(fullId,None)
-        #if term:
-            #log.info("GOT %s" % fullId)
-            
-        if term and refresh:
-            del TERMS[termId]
-            log.info("Term '%s' found and removed" % termId)
-            term = None
-
-        query = """ 
-        SELECT ?term ?type ?label ?layer ?sup ?cat WHERE {
-             %s a ?type;
-                rdfs:label ?label.
-            OPTIONAL {
-                %s schema:isPartOf ?layer.
-            }
-            OPTIONAL {
-                %s rdfs:subClassOf ?sup.
-            }
-            OPTIONAL {
-                %s rdfs:subPropertyOf ?sup.
-            }
-            OPTIONAL {
-                %s schema:category ?cat.
-            }
-        
-        }""" % (uriWrap(fullId),uriWrap(fullId),uriWrap(fullId),uriWrap(fullId),uriWrap(fullId))
-        
-        #log.info("QUERY %s" % query)
-        if not term:
-            #log.info("query %s" % query)
-            res = SdoTermSource.query(query)
-            if len(res):
-                term = SdoTermSource.termsFromResults(res,termId=fullId)
-            elif createReference:
-                term = SdoTermSource(fullId)
-            else:
-                log.debug("No definition of term %s" % fullId)
-            term = term.term
-        if expanded and not term.expanded:
-            exterm = EXPANDEDTERMS.get(fullId,None)
-            if not exterm:
-                exterm = SdoTermSource.expandTerm(term)
-                EXPANDEDTERMS[fullId] = exterm
-            term = exterm
-                
-        return term
 
     @staticmethod
     def expandTerm(term,depth=0):
@@ -867,6 +806,70 @@ class SdoTermSource():
     @staticmethod
     def termCache():
         return TERMS
+    @staticmethod
+    def getTerm(termId,expanded=False,refresh=False,createReference=False):
+        #log.info("getTerm(%s,%s,%s)" % (termId,refresh,createReference))
+        with TERMSLOCK:
+            return SdoTermSource._getTerm(termId,expanded=expanded,refresh=refresh,createReference=createReference)
+
+    @staticmethod
+    def _getTerm(termId,expanded=False,refresh=False,createReference=False):
+
+        if not termId:
+            return None
+        #log.info("GET: %s" % termId)
+        termId = str(termId)
+        fullId = toFullId(termId)
+        #log.info("_GETTERM termId %s full %s" % (termId,fullId))
+        term = TERMS.get(fullId,None)
+        #if term:
+            #log.info("GOT %s" % fullId)
+            
+        if term and refresh:
+            del TERMS[termId]
+            log.info("Term '%s' found and removed" % termId)
+            term = None
+
+        query = """ 
+        SELECT ?term ?type ?label ?layer ?sup ?cat WHERE {
+             %s a ?type;
+                rdfs:label ?label.
+            OPTIONAL {
+                %s schema:isPartOf ?layer.
+            }
+            OPTIONAL {
+                %s rdfs:subClassOf ?sup.
+            }
+            OPTIONAL {
+                %s rdfs:subPropertyOf ?sup.
+            }
+            OPTIONAL {
+                %s schema:category ?cat.
+            }
+        
+        }""" % (uriWrap(fullId),uriWrap(fullId),uriWrap(fullId),uriWrap(fullId),uriWrap(fullId))
+        
+        #log.info("QUERY %s" % query)
+        if not term:
+            #log.info("query %s" % query)
+            res = SdoTermSource.query(query)
+            if len(res):
+                term = SdoTermSource.termsFromResults(res,termId=fullId)
+            elif createReference:
+                term = SdoTermSource(fullId)
+            else:
+                log.debug("No definition of term %s" % fullId)
+            term = term.term
+                            
+        if expanded and not term.expanded:
+            exterm = EXPANDEDTERMS.get(fullId,None)
+            if not exterm:
+                exterm = SdoTermSource.expandTerm(term)
+                EXPANDEDTERMS[fullId] = exterm
+                term.allproperties = []
+            term = exterm
+                
+        return term
 
 def toFullId(termId):
 
