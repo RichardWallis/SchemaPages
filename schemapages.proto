@@ -33,13 +33,14 @@ message SDOBaseType {
     required string id = 1;
     repeated SDOTerm termdescriptor = 2;
     repeated string properties = 3;
-    repeated string expectedTypeFor = 4;
-    repeated string enumerationMembers = 5;
-    optional string supersededBy = 6;
-    repeated string supersedes = 7;
-    repeated string subs = 12;
-    repeated string supers = 13;
-    repeated string termStack = 8;
+    repeated string allproperties = 4;
+    repeated string expectedTypeFor = 5;
+    repeated string enumerationMembers = 6;
+    optional string supersededBy = 7;
+    repeated string supersedes = 8;
+    repeated string subs = 9;
+    repeated string supers = 10;
+    repeated string termStack = 11;
 }
 
 message SDOProperty {
@@ -49,9 +50,9 @@ message SDOProperty {
     repeated string rangeIncludes = 4;
     optional string supersededBy = 5;
     repeated string supersedes = 6;
-    repeated string subs = 12;
-    repeated string supers = 13;
-    repeated string termStack = 8;
+    repeated string subs = 7;
+    repeated string supers = 8;
+    repeated string termStack = 9;
 }
 
 message SDOEnumerationValue {
@@ -75,7 +76,20 @@ message SDOBaseTypeExpanded {
     repeated string enumerationMembers = 5;
     repeated string subs = 6;
     repeated string supers = 7;
-    repeated SDOBaseTypeExpanded termStack = 8;
+    repeated SDOBaseTypeExpandedProps termStack = 8;
+    optional string supersededBy = 9;
+    repeated string supersedes = 10;
+}
+
+message SDOBaseTypeExpandedProps {
+    required string id = 1;
+    repeated SDOTerm termdescriptor = 2;
+    repeated SDOProperty properties = 3;
+    repeated SDOProperty expectedTypeFor = 4;
+    repeated string enumerationMembers = 5;
+    repeated string subs = 6;
+    repeated string supers = 7;
+    repeated string termStack = 8;
     optional string supersededBy = 9;
     repeated string supersedes = 10;
 }

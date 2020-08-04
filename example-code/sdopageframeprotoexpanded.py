@@ -94,13 +94,16 @@ def populateMsg(msg=None,term=None):
     
     return msg
 
-def populateExpandedMsg(msg=None,term=None):
+def populateExpandedMsg(msg=None,term=None,inTermStack=True):
     log.info("EXPop %s type %s" %(term.id,term.termType)) 
     if msg:
         log.info("Passed a %s" % msg.__class__.__name__) 
     if not msg:
         if term.termType == SdoTerm.TYPE or term.termType == SdoTerm.DATATYPE or term.termType == SdoTerm.ENUMERATION:
-            msg = schemapages_pb2.SDOBaseTypeExpanded()
+            if not inTermStack:
+                msg = schemapages_pb2.SDOBaseTypeExpanded()
+            else:
+                msg = schemapages_pb2.SDOBaseTypeExpandedProps()
         else:
             print("Unknown term type '%s'" % term.termType)
         log.info("Alocated a %s" % msg.__class__.__name__)
@@ -113,8 +116,11 @@ def populateExpandedMsg(msg=None,term=None):
         populateMsg(msg.properties.add(),i)
     for i in term.expectedTypeFor:
         populateMsg(msg.expectedTypeFor.add(),i)
-    for i in term.termStack:
-        populateMsg(msg.termStack.add(),i)
+    if inTermStack:
+        msg.termStack.extend(term.termStack)
+    else:
+        for i in term.termStack:
+            populateMsg(msg.termStack.add(),i,inTermStack=True)
     msg.subs.extend(term.subs)
     msg.supers.extend(term.supers)
     msg.supersedes.extend(term.supersedes)
