@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<!-- Generated from TypePage.tpl -->
+<!-- Generated from TypePageEx.tpl -->
 <head>
     <title>{{ term.label }} - {{ sitename }}</title>
     <meta charset="utf-8" >
