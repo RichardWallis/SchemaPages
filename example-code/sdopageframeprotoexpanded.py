@@ -33,7 +33,7 @@ sdotypemap = {
     SdoTerm.REFERENCE: schemapages_pb2.TermType.REFERENCE
 }
 
-#Populate termdescriptor message common sub-messae of all (except REFERENCE)
+#Populate termdescriptor - message common sub-message of all (except REFERENCE)
 def termdescriptorPopulate(termdesc,term):
     termdesc.termType = sdotypemap[term.termType]
     termdesc.uri = term.uri
@@ -51,16 +51,6 @@ def termdescriptorPopulate(termdesc,term):
         termdesc.supersededBy = term.supersededBy
         termdesc.supersedes.extend(term.supersedes)
     
-
-#Populate message for passed term 
-#If msg != None the empty message will have been created by previous nested add() call
-def populateMsg(msg=None,term=None,inTermStack=False):
-    if term.expanded:
-        if term.termType == SdoTerm.TYPE or term.termType == SdoTerm.DATATYPE or term.termType == SdoTerm.ENUMERATION:
-            return populateExpandedMsg(msg=msg,term=term,inTermStack=inTermStack)
-    
-    return populateSimpleMsg(msg=msg,term=term,inTermStack=inTermStack)
-
 #Populate message for passed simple (non-expanded) term
 #If msg != None the empty message will have been created by previous nested add() call
 #If no msg passed one of appropriate type is created
@@ -79,7 +69,7 @@ def populateSimpleMsg(msg=None,term=None,inTermStack=False):
 
     msg.id = term.id
     if term.termType == SdoTerm.REFERENCE:
-        #Reference msg only has id & uri values
+        #Reference message only has id & uri values
         msg.uri = term.uri
     else:
         #Populate standard submessage
@@ -118,14 +108,13 @@ def populateExpandedMsg(msg=None,term=None,inTermStack=False):
             print("Unknown term type '%s'" % term.termType)
 
     msg.id = term.id
-    msgterm = msg.termdescriptor.add()
-    termdescriptorPopulate(msgterm,term)
+    termdescriptorPopulate(msg.termdescriptor.add(),term)
 
     for i in term.properties:
         populateMsg(msg.properties.add(),i)
     for i in term.expectedTypeFor:
         populateMsg(msg.expectedTypeFor.add(),i)
-    if inTermStack:
+    if inTermStack:  #Nested expanded terms only have termStack as string array
         msg.termStack.extend(term.termStack)
     else:
         for i in term.termStack:
@@ -136,19 +125,31 @@ def populateExpandedMsg(msg=None,term=None,inTermStack=False):
         msg.enumerationMembers.extend(term.enumerationMembers)
     return msg
 
+#Populate message for passed term 
+#If msg != None the empty message will have been created by previous nested add() call
+def populateMsg(msg=None,term=None,inTermStack=False):
+    if term.expanded:
+        if term.termType == SdoTerm.TYPE or term.termType == SdoTerm.DATATYPE or term.termType == SdoTerm.ENUMERATION:
+            return populateExpandedMsg(msg=msg,term=term,inTermStack=inTermStack)
+    
+    return populateSimpleMsg(msg=msg,term=term,inTermStack=inTermStack)
+
     
 import time,datetime
-start = datetime.datetime.now()
+
+start = datetime.datetime.now() #debug
 for t in terms:
-    tic = datetime.datetime.now()
+    tic = datetime.datetime.now() #debug
+    
     term = SdoTermSource.getTerm(t,expanded=True)
     msg = populateMsg(term=term).SerializeToString()
     filename = "protomsgs/" + t +".msg"
-    f = open(filename,"w")
+    f = open(filename,"wb")
     f.write(msg)
     f.close()
-    print("Term: %s - %s" % (t, str(datetime.datetime.now()-tic)))
-print ("All terms took %s seconds" % str(datetime.datetime.now()-start))
+    
+    print("Term: %s - %s" % (t, str(datetime.datetime.now()-tic))) #debug
+print ("All terms took %s seconds" % str(datetime.datetime.now()-start)) #debug
     
 
 
