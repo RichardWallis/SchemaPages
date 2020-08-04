@@ -247,7 +247,7 @@ class SdoTermSource():
             self.supersedes = []
             subs = self.loadSubjects("schema:supersededBy")
             for sub in subs:
-                self.supersedes = uri2id(str(sub))
+                self.supersedes.append(uri2id(str(sub)))
         return self.supersedes
     def getSourcesAndAcks(self):
         if not self.srcaks:
@@ -294,6 +294,8 @@ class SdoTermSource():
             self.termStack = []
             for sup in self.getSupers():
                 s = SdoTermSource._getTerm(sup,createReference=True)
+                if s.termType == SdoTerm.REFERENCE:
+                    continue
                 self.termStack.append(s.id)
                 if s.termStack:
                     self.termStack.extend(s.termStack)                
@@ -587,18 +589,18 @@ class SdoTermSource():
 
         if not term.expanded:
             term.expanded = True
-            term.termStack = SdoTermSource.termsFromIds(term.termStack)
+            termStack = SdoTermSource.termsFromIds(term.termStack)
         
             if term.termType == SdoTerm.TYPE or term.termType == SdoTerm.DATATYPE or term.termType == SdoTerm.ENUMERATION:
                 #log.info("Mapping props for %s" % term.id)
                 term.properties = SdoTermSource.termsFromIds(term.properties)
                 term.expectedTypeFor = SdoTermSource.termsFromIds(term.expectedTypeFor)
 
-            if not depth: #Expand the indivdual terms in the terms termstack but prevent recursion further.
-                stack = []
-                for t in term.termStack:
-                    stack.append(SdoTermSource.expandTerm(t,depth=depth +1))
-                term.termStack = stack
+                if not depth: #Expand the indivdual terms in the terms termstack but prevent recursion further.
+                    stack = []
+                    for t in termStack:
+                        stack.append(SdoTermSource.expandTerm(t,depth=depth +1))
+                    term.termStack = stack
         
         return term
  

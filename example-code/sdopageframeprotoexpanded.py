@@ -19,7 +19,7 @@ termgraph.parse(triplesfile, format="nt")
 print ("loaded %s triples" % len(termgraph))
 
 SdoTermSource.setQueryGraph(termgraph)
-terms = terms = SdoTermSource.getAllTerms()
+terms = SdoTermSource.getAllTerms()
 print ("Terms Count: %s" % len(terms))
 
 import schemapages_pb2
@@ -33,27 +33,38 @@ sdotypemap = {
     SdoTerm.REFERENCE: schemapages_pb2.TermType.REFERENCE
 }
 
+#Populate termdescriptor message common sub-messae of all (except REFERENCE)
 def termdescriptorPopulate(termdesc,term):
     termdesc.termType = sdotypemap[term.termType]
     termdesc.uri = term.uri
-    termdesc.label = term.label
-    termdesc.acknowledgements.extend(term.acknowledgements)
-    for i in term.superPaths:
-        sp = termdesc.superPaths.add()
-        sp.superPath.extend(i)
-    termdesc.comment = term.comment
-    termdesc.equivalents.extend(term.equivalents)
-    termdesc.pending = term.pending
-    termdesc.retired = term.retired
-    termdesc.sources.extend(term.sources)
+    if term.termType != SdoTerm.REFERENCE:
+        termdesc.label = term.label
+        termdesc.acknowledgements.extend(term.acknowledgements)
+        for i in term.superPaths:
+            sp = termdesc.superPaths.add()
+            sp.superPath.extend(i)
+        termdesc.comment = term.comment
+        termdesc.equivalents.extend(term.equivalents)
+        termdesc.pending = term.pending
+        termdesc.retired = term.retired
+        termdesc.sources.extend(term.sources)
+        termdesc.supersededBy = term.supersededBy
+        termdesc.supersedes.extend(term.supersedes)
     
 
-def populateMsg(msg=None,term=None):
+#Populate message for passed term 
+#If msg != None the empty message will have been created by previous nested add() call
+def populateMsg(msg=None,term=None,inTermStack=False):
     if term.expanded:
-        return populateExpandedMsg(msg=msg,term=term)
-    log.info("Pop %s type %s" %(term.id,term.termType))
-    if msg:  
-        log.info("Passed a %s" % msg.__class__.__name__)
+        if term.termType == SdoTerm.TYPE or term.termType == SdoTerm.DATATYPE or term.termType == SdoTerm.ENUMERATION:
+            return populateExpandedMsg(msg=msg,term=term,inTermStack=inTermStack)
+    
+    return populateSimpleMsg(msg=msg,term=term,inTermStack=inTermStack)
+
+#Populate message for passed simple (non-expanded) term
+#If msg != None the empty message will have been created by previous nested add() call
+#If no msg passed one of appropriate type is created
+def populateSimpleMsg(msg=None,term=None,inTermStack=False):
     if not msg:
         if term.termType == SdoTerm.TYPE or term.termType == SdoTerm.DATATYPE or term.termType == SdoTerm.ENUMERATION:
             msg = schemapages_pb2.SDOBaseType()
@@ -65,48 +76,46 @@ def populateMsg(msg=None,term=None):
             msg = schemapages_pb2.SDOReference()
         else:
             print("Unknown term type '%s'" % term.termType)
-        log.info("Alocated a %s" % msg.__class__.__name__)
 
     msg.id = term.id
-    termdescriptorPopulate(msg.termdescriptor.add(),term)
+    if term.termType == SdoTerm.REFERENCE:
+        #Reference msg only has id & uri values
+        msg.uri = term.uri
+    else:
+        #Populate standard submessage
+        termdescriptorPopulate(msg.termdescriptor.add(),term)
     
-    if term.termType == SdoTerm.TYPE or term.termType == SdoTerm.DATATYPE or term.termType == SdoTerm.ENUMERATION:
-        msg.properties.extend(term.properties)
-        msg.expectedTypeFor.extend(term.expectedTypeFor)
-        msg.termStack.extend(term.termStack)
-        msg.subs.extend(term.subs)
-        msg.supers.extend(term.supers)
-        msg.supersedes.extend(term.supersedes)
-        if term.termType == SdoTerm.ENUMERATION:
-            msg.enumerationMembers.extend(term.enumerationMembers)
-    elif term.termType == SdoTerm.PROPERTY:
-        msg.domainIncludes.extend(term.domainIncludes)
-        msg.rangeIncludes.extend(term.rangeIncludes)
-        msg.supersedes.extend(term.supersedes)
-        msg.termStack.extend(term.termStack)
-        msg.subs.extend(term.subs)
-        msg.supers.extend(term.supers)
-    elif term.termType == SdoTerm.ENUMERATIONVALUE:
-        msg.enumerationParent = term.enumerationParent
-        msg.supersedes.extend(term.supersedes)
-    elif term.termType == SdoTerm.REFERENCE:
-        pass
-    
+        if term.termType == SdoTerm.TYPE or term.termType == SdoTerm.DATATYPE or term.termType == SdoTerm.ENUMERATION:
+            msg.properties.extend(term.properties)
+            msg.expectedTypeFor.extend(term.expectedTypeFor)
+            msg.termStack.extend(term.termStack)
+            msg.subs.extend(term.subs)
+            msg.supers.extend(term.supers)
+            if term.termType == SdoTerm.ENUMERATION:
+                msg.enumerationMembers.extend(term.enumerationMembers)
+        elif term.termType == SdoTerm.PROPERTY:
+            msg.domainIncludes.extend(term.domainIncludes)
+            msg.rangeIncludes.extend(term.rangeIncludes)
+            msg.termStack.extend(term.termStack)
+            msg.subs.extend(term.subs)
+            msg.supers.extend(term.supers)
+        elif term.termType == SdoTerm.ENUMERATIONVALUE:
+            msg.enumerationParent = term.enumerationParent
     return msg
 
-def populateExpandedMsg(msg=None,term=None,inTermStack=True):
-    log.info("EXPop %s type %s" %(term.id,term.termType)) 
-    if msg:
-        log.info("Passed a %s" % msg.__class__.__name__) 
+#Populate message for passed expanded term
+#If msg != None the empty message will have been created by previous nested add() call
+#If no msg passed one of appropriate type is created
+def populateExpandedMsg(msg=None,term=None,inTermStack=False):
     if not msg:
         if term.termType == SdoTerm.TYPE or term.termType == SdoTerm.DATATYPE or term.termType == SdoTerm.ENUMERATION:
             if not inTermStack:
                 msg = schemapages_pb2.SDOBaseTypeExpanded()
             else:
-                msg = schemapages_pb2.SDOBaseTypeExpandedProps()
+                #Termstack nested terms do not have their termstack expanded
+                msg = schemapages_pb2.SDOBaseTypeExpandedPropsOnly()
         else:
             print("Unknown term type '%s'" % term.termType)
-        log.info("Alocated a %s" % msg.__class__.__name__)
 
     msg.id = term.id
     msgterm = msg.termdescriptor.add()
@@ -123,33 +132,20 @@ def populateExpandedMsg(msg=None,term=None,inTermStack=True):
             populateMsg(msg.termStack.add(),i,inTermStack=True)
     msg.subs.extend(term.subs)
     msg.supers.extend(term.supers)
-    msg.supersedes.extend(term.supersedes)
-    msg.supersedes.extend(term.supersedes)
     if term.termType == SdoTerm.ENUMERATION:
         msg.enumerationMembers.extend(term.enumerationMembers)
     return msg
+
     
-def term2protomsgExpanded(termid):
-    term = SdoTermSource.getTerm(termid,expanded=True)
-    
-    msg = populateMsg(term=term)
-    
-    msgstr = msg.SerializeToString()
-    return msgstr
-    
-out = term2protomsgExpanded("Permit")
-print(len(out))
-sys.exit()
-    
-#print(':'.join(x.encode('hex') for x in msgstr))
 import time,datetime
 start = datetime.datetime.now()
 for t in terms:
     tic = datetime.datetime.now()
-    ms = term2protomsg(t)
+    term = SdoTermSource.getTerm(t,expanded=True)
+    msg = populateMsg(term=term).SerializeToString()
     filename = "protomsgs/" + t +".msg"
     f = open(filename,"w")
-    f.write(ms)
+    f.write(msg)
     f.close()
     print("Term: %s - %s" % (t, str(datetime.datetime.now()-tic)))
 print ("All terms took %s seconds" % str(datetime.datetime.now()-start))

@@ -1,7 +1,8 @@
 syntax = "proto2";
 package SchemaPages;
 
-enum TermType {
+//Term description types
+enum TermType {                   
     TYPE = 0;
     PROPERTY = 1;
     DATATYPE = 2;
@@ -14,61 +15,64 @@ message SuperPath {
     repeated string superPath = 1;
 }
 
-message SDOTerm {
+//Common sub-message for all except Reference
+message SDOTerm {                      
     required TermType termType = 1;
     required string uri = 2;
     required string label = 4;
 
-    repeated SuperPath superPaths = 6;
+    repeated SuperPath superPaths = 6;   //superpaths are an array of string arrays
     
     repeated string acknowledgements = 5;
     required string comment = 7;
     repeated string equivalents = 8;
     required bool pending = 9;
     required bool retired = 10;
-    repeated string sources = 11;
+    optional string supersededBy = 11;
+    repeated string supersedes = 12;
+    repeated string sources = 13;
 }
 
-message SDOBaseType {
+//SimpleType/DataType/Enumeration message
+message SDOBaseType {                
     required string id = 1;
     repeated SDOTerm termdescriptor = 2;
     repeated string properties = 3;
     repeated string allproperties = 4;
     repeated string expectedTypeFor = 5;
     repeated string enumerationMembers = 6;
-    optional string supersededBy = 7;
-    repeated string supersedes = 8;
     repeated string subs = 9;
     repeated string supers = 10;
     repeated string termStack = 11;
 }
 
-message SDOProperty {
+//Simple & Expanded Property message
+message SDOProperty {                
     required string id = 1;
     repeated SDOTerm termdescriptor = 2;
     repeated string domainIncludes = 3;
     repeated string rangeIncludes = 4;
-    optional string supersededBy = 5;
-    repeated string supersedes = 6;
-    repeated string subs = 7;
-    repeated string supers = 8;
-    repeated string termStack = 9;
+    repeated string subs = 5;
+    repeated string supers = 6;
+    repeated string termStack = 7;
 }
 
-message SDOEnumerationValue {
+//Simple & expanded EnumerationValue message
+message SDOEnumerationValue {       
     required string id = 1;
     repeated SDOTerm termdescriptor = 2;
     required string enumerationParent = 3;
-    optional string supersededBy = 4;
-    repeated string supersedes = 5;
 }
 
-message SDOReference {
+//Reference message
+message SDOReference {             
     required string id = 1;
-    repeated SDOTerm termdescriptor = 2;
+    required string uri = 2;
 }
 
-message SDOBaseTypeExpanded {
+//Expanded Type/DataType/Enumeration message
+message SDOBaseTypeExpanded {       
+
     required string id = 1;
     repeated SDOTerm termdescriptor = 2;
     repeated SDOProperty properties = 3;
@@ -76,12 +80,11 @@ message SDOBaseTypeExpanded {
     repeated string enumerationMembers = 5;
     repeated string subs = 6;
     repeated string supers = 7;
-    repeated SDOBaseTypeExpandedProps termStack = 8;
-    optional string supersededBy = 9;
-    repeated string supersedes = 10;
+    repeated SDOBaseTypeExpandedPropsOnly termStack = 8;
 }
 
-message SDOBaseTypeExpandedProps {
+//Expanded Type/DataType/Enumeration message - without expanded termStack 
+message SDOBaseTypeExpandedPropsOnly {
     required string id = 1;
     repeated SDOTerm termdescriptor = 2;
     repeated SDOProperty properties = 3;
@@ -90,8 +93,6 @@ message SDOBaseTypeExpandedProps {
     repeated string subs = 6;
     repeated string supers = 7;
     repeated string termStack = 8;
-    optional string supersededBy = 9;
-    repeated string supersedes = 10;
 }
 
 

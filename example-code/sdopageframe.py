@@ -26,7 +26,7 @@ print ("Types Count: %s" % len(SdoTermSource.getAllTypes(expanded=False)))
 print ("Properties Count: %s" % len(SdoTermSource.getAllProperties(expanded=False)))
 
 
-term = SdoTermSource.getTerm("Book")
+term = SdoTermSource.getTerm("acceptedAnswer")
 
 print("")
 print("TYPE: %s" % term.termType)

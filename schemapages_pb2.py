@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto2',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x11schemapages.proto\x12\x0bSchemaPages\"\x1e\n\tSuperPath\x12\x11\n\tsuperPath\x18\x01 \x03(\t\"\xed\x01\n\x07SDOTerm\x12\'\n\x08termType\x18\x01 \x02(\x0e\x32\x15.SchemaPages.TermType\x12\x0b\n\x03uri\x18\x02 \x02(\t\x12\r\n\x05label\x18\x04 \x02(\t\x12*\n\nsuperPaths\x18\x06 \x03(\x0b\x32\x16.SchemaPages.SuperPath\x12\x18\n\x10\x61\x63knowledgements\x18\x05 \x03(\t\x12\x0f\n\x07\x63omment\x18\x07 \x02(\t\x12\x13\n\x0b\x65quivalents\x18\x08 \x03(\t\x12\x0f\n\x07pending\x18\t \x02(\x08\x12\x0f\n\x07retired\x18\n \x02(\x08\x12\x0f\n\x07sources\x18\x0b \x03(\t\"\xeb\x01\n\x0bSDOBaseType\x12\n\n\x02id\x18\x01 \x02(\t\x12,\n\x0etermdescriptor\x18\x02 \x03(\x0b\x32\x14.SchemaPages.SDOTerm\x12\x12\n\nproperties\x18\x03 \x03(\t\x12\x17\n\x0f\x65xpectedTypeFor\x18\x04 \x03(\t\x12\x1a\n\x12\x65numerationMembers\x18\x05 \x03(\t\x12\x14\n\x0csupersededBy\x18\x06 \x01(\t\x12\x12\n\nsupersedes\x18\x07 \x03(\t\x12\x0c\n\x04subs\x18\x0c \x03(\t\x12\x0e\n\x06supers\x18\r \x03(\t\x12\x11\n\ttermStack\x18\x08 \x03(\t\"\xd1\x01\n\x0bSDOProperty\x12\n\n\x02id\x18\x01 \x02(\t\x12,\n\x0etermdescriptor\x18\x02 \x03(\x0b\x32\x14.SchemaPages.SDOTerm\x12\x16\n\x0e\x64omainIncludes\x18\x03 \x03(\t\x12\x15\n\rrangeIncludes\x18\x04 \x03(\t\x12\x14\n\x0csupersededBy\x18\x05 \x01(\t\x12\x12\n\nsupersedes\x18\x06 \x03(\t\x12\x0c\n\x04subs\x18\x0c \x03(\t\x12\x0e\n\x06supers\x18\r \x03(\t\x12\x11\n\ttermStack\x18\x08 \x03(\t\"\x94\x01\n\x13SDOEnumerationValue\x12\n\n\x02id\x18\x01 \x02(\t\x12,\n\x0etermdescriptor\x18\x02 \x03(\x0b\x32\x14.SchemaPages.SDOTerm\x12\x19\n\x11\x65numerationParent\x18\x03 \x02(\t\x12\x14\n\x0csupersededBy\x18\x04 \x01(\t\x12\x12\n\nsupersedes\x18\x05 \x03(\t\"H\n\x0cSDOReference\x12\n\n\x02id\x18\x01 \x02(\t\x12,\n\x0etermdescriptor\x18\x02 \x03(\x0b\x32\x14.SchemaPages.SDOTerm\"\xc9\x02\n\x13SDOBaseTypeExpanded\x12\n\n\x02id\x18\x01 \x02(\t\x12,\n\x0etermdescriptor\x18\x02 \x03(\x0b\x32\x14.SchemaPages.SDOTerm\x12,\n\nproperties\x18\x03 \x03(\x0b\x32\x18.SchemaPages.SDOProperty\x12\x31\n\x0f\x65xpectedTypeFor\x18\x04 \x03(\x0b\x32\x18.SchemaPages.SDOProperty\x12\x1a\n\x12\x65numerationMembers\x18\x05 \x03(\t\x12\x0c\n\x04subs\x18\x06 \x03(\t\x12\x0e\n\x06supers\x18\x07 \x03(\t\x12\x33\n\ttermStack\x18\x08 \x03(\x0b\x32 .SchemaPages.SDOBaseTypeExpanded\x12\x14\n\x0csupersededBy\x18\t \x01(\t\x12\x12\n\nsupersedes\x18\n \x03(\t*f\n\x08TermType\x12\x08\n\x04TYPE\x10\x00\x12\x0c\n\x08PROPERTY\x10\x01\x12\x0c\n\x08\x44\x41TATYPE\x10\x02\x12\x0f\n\x0b\x45NUMERATION\x10\x03\x12\x14\n\x10\x45NUMERATIONVALUE\x10\x04\x12\r\n\tREFERENCE\x10\x05'
+  serialized_pb=b'\n\x11schemapages.proto\x12\x0bSchemaPages\"\x1e\n\tSuperPath\x12\x11\n\tsuperPath\x18\x01 \x03(\t\"\x97\x02\n\x07SDOTerm\x12\'\n\x08termType\x18\x01 \x02(\x0e\x32\x15.SchemaPages.TermType\x12\x0b\n\x03uri\x18\x02 \x02(\t\x12\r\n\x05label\x18\x04 \x02(\t\x12*\n\nsuperPaths\x18\x06 \x03(\x0b\x32\x16.SchemaPages.SuperPath\x12\x18\n\x10\x61\x63knowledgements\x18\x05 \x03(\t\x12\x0f\n\x07\x63omment\x18\x07 \x02(\t\x12\x13\n\x0b\x65quivalents\x18\x08 \x03(\t\x12\x0f\n\x07pending\x18\t \x02(\x08\x12\x0f\n\x07retired\x18\n \x02(\x08\x12\x14\n\x0csupersededBy\x18\x0b \x01(\t\x12\x12\n\nsupersedes\x18\x0c \x03(\t\x12\x0f\n\x07sources\x18\r \x03(\t\"\xd8\x01\n\x0bSDOBaseType\x12\n\n\x02id\x18\x01 \x02(\t\x12,\n\x0etermdescriptor\x18\x02 \x03(\x0b\x32\x14.SchemaPages.SDOTerm\x12\x12\n\nproperties\x18\x03 \x03(\t\x12\x15\n\rallproperties\x18\x04 \x03(\t\x12\x17\n\x0f\x65xpectedTypeFor\x18\x05 \x03(\t\x12\x1a\n\x12\x65numerationMembers\x18\x06 \x03(\t\x12\x0c\n\x04subs\x18\t \x03(\t\x12\x0e\n\x06supers\x18\n \x03(\t\x12\x11\n\ttermStack\x18\x0b \x03(\t\"\xa7\x01\n\x0bSDOProperty\x12\n\n\x02id\x18\x01 \x02(\t\x12,\n\x0etermdescriptor\x18\x02 \x03(\x0b\x32\x14.SchemaPages.SDOTerm\x12\x16\n\x0e\x64omainIncludes\x18\x03 \x03(\t\x12\x15\n\rrangeIncludes\x18\x04 \x03(\t\x12\x0c\n\x04subs\x18\x05 \x03(\t\x12\x0e\n\x06supers\x18\x06 \x03(\t\x12\x11\n\ttermStack\x18\x07 \x03(\t\"j\n\x13SDOEnumerationValue\x12\n\n\x02id\x18\x01 \x02(\t\x12,\n\x0etermdescriptor\x18\x02 \x03(\x0b\x32\x14.SchemaPages.SDOTerm\x12\x19\n\x11\x65numerationParent\x18\x03 \x02(\t\"\'\n\x0cSDOReference\x12\n\n\x02id\x18\x01 \x02(\t\x12\x0b\n\x03uri\x18\x02 \x02(\t\"\xa8\x02\n\x13SDOBaseTypeExpanded\x12\n\n\x02id\x18\x01 \x02(\t\x12,\n\x0etermdescriptor\x18\x02 \x03(\x0b\x32\x14.SchemaPages.SDOTerm\x12,\n\nproperties\x18\x03 \x03(\x0b\x32\x18.SchemaPages.SDOProperty\x12\x31\n\x0f\x65xpectedTypeFor\x18\x04 \x03(\x0b\x32\x18.SchemaPages.SDOProperty\x12\x1a\n\x12\x65numerationMembers\x18\x05 \x03(\t\x12\x0c\n\x04subs\x18\x06 \x03(\t\x12\x0e\n\x06supers\x18\x07 \x03(\t\x12<\n\ttermStack\x18\x08 \x03(\x0b\x32).SchemaPages.SDOBaseTypeExpandedPropsOnly\"\x86\x02\n\x1cSDOBaseTypeExpandedPropsOnly\x12\n\n\x02id\x18\x01 \x02(\t\x12,\n\x0etermdescriptor\x18\x02 \x03(\x0b\x32\x14.SchemaPages.SDOTerm\x12,\n\nproperties\x18\x03 \x03(\x0b\x32\x18.SchemaPages.SDOProperty\x12\x31\n\x0f\x65xpectedTypeFor\x18\x04 \x03(\x0b\x32\x18.SchemaPages.SDOProperty\x12\x1a\n\x12\x65numerationMembers\x18\x05 \x03(\t\x12\x0c\n\x04subs\x18\x06 \x03(\t\x12\x0e\n\x06supers\x18\x07 \x03(\t\x12\x11\n\ttermStack\x18\x08 \x03(\t*f\n\x08TermType\x12\x08\n\x04TYPE\x10\x00\x12\x0c\n\x08PROPERTY\x10\x01\x12\x0c\n\x08\x44\x41TATYPE\x10\x02\x12\x0f\n\x0b\x45NUMERATION\x10\x03\x12\x14\n\x10\x45NUMERATIONVALUE\x10\x04\x12\r\n\tREFERENCE\x10\x05'
 )
 
 _TERMTYPE = _descriptor.EnumDescriptor(
@@ -63,8 +63,8 @@ _TERMTYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=1313,
-  serialized_end=1415,
+  serialized_start=1450,
+  serialized_end=1552,
 )
 _sym_db.RegisterEnumDescriptor(_TERMTYPE)
 
@@ -182,8 +182,22 @@ _SDOTERM = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='sources', full_name='SchemaPages.SDOTerm.sources', index=9,
-      number=11, type=9, cpp_type=9, label=3,
+      name='supersededBy', full_name='SchemaPages.SDOTerm.supersededBy', index=9,
+      number=11, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='supersedes', full_name='SchemaPages.SDOTerm.supersedes', index=10,
+      number=12, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='sources', full_name='SchemaPages.SDOTerm.sources', index=11,
+      number=13, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -201,7 +215,7 @@ _SDOTERM = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=67,
-  serialized_end=304,
+  serialized_end=346,
 )
 
 
@@ -235,50 +249,43 @@ _SDOBASETYPE = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='expectedTypeFor', full_name='SchemaPages.SDOBaseType.expectedTypeFor', index=3,
+      name='allproperties', full_name='SchemaPages.SDOBaseType.allproperties', index=3,
       number=4, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='enumerationMembers', full_name='SchemaPages.SDOBaseType.enumerationMembers', index=4,
+      name='expectedTypeFor', full_name='SchemaPages.SDOBaseType.expectedTypeFor', index=4,
       number=5, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='supersededBy', full_name='SchemaPages.SDOBaseType.supersededBy', index=5,
-      number=6, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='supersedes', full_name='SchemaPages.SDOBaseType.supersedes', index=6,
-      number=7, type=9, cpp_type=9, label=3,
+      name='enumerationMembers', full_name='SchemaPages.SDOBaseType.enumerationMembers', index=5,
+      number=6, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='subs', full_name='SchemaPages.SDOBaseType.subs', index=7,
-      number=12, type=9, cpp_type=9, label=3,
+      name='subs', full_name='SchemaPages.SDOBaseType.subs', index=6,
+      number=9, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='supers', full_name='SchemaPages.SDOBaseType.supers', index=8,
-      number=13, type=9, cpp_type=9, label=3,
+      name='supers', full_name='SchemaPages.SDOBaseType.supers', index=7,
+      number=10, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='termStack', full_name='SchemaPages.SDOBaseType.termStack', index=9,
-      number=8, type=9, cpp_type=9, label=3,
+      name='termStack', full_name='SchemaPages.SDOBaseType.termStack', index=8,
+      number=11, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -295,8 +302,8 @@ _SDOBASETYPE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=307,
-  serialized_end=542,
+  serialized_start=349,
+  serialized_end=565,
 )
 
 
@@ -337,36 +344,22 @@ _SDOPROPERTY = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='supersededBy', full_name='SchemaPages.SDOProperty.supersededBy', index=4,
-      number=5, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
+      name='subs', full_name='SchemaPages.SDOProperty.subs', index=4,
+      number=5, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='supersedes', full_name='SchemaPages.SDOProperty.supersedes', index=5,
+      name='supers', full_name='SchemaPages.SDOProperty.supers', index=5,
       number=6, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='subs', full_name='SchemaPages.SDOProperty.subs', index=6,
-      number=12, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='supers', full_name='SchemaPages.SDOProperty.supers', index=7,
-      number=13, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='termStack', full_name='SchemaPages.SDOProperty.termStack', index=8,
-      number=8, type=9, cpp_type=9, label=3,
+      name='termStack', full_name='SchemaPages.SDOProperty.termStack', index=6,
+      number=7, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -383,8 +376,8 @@ _SDOPROPERTY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=545,
-  serialized_end=754,
+  serialized_start=568,
+  serialized_end=735,
 )
 
 
@@ -417,20 +410,6 @@ _SDOENUMERATIONVALUE = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='supersededBy', full_name='SchemaPages.SDOEnumerationValue.supersededBy', index=3,
-      number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='supersedes', full_name='SchemaPages.SDOEnumerationValue.supersedes', index=4,
-      number=5, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -443,8 +422,8 @@ _SDOENUMERATIONVALUE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=757,
-  serialized_end=905,
+  serialized_start=737,
+  serialized_end=843,
 )
 
 
@@ -464,9 +443,9 @@ _SDOREFERENCE = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='termdescriptor', full_name='SchemaPages.SDOReference.termdescriptor', index=1,
-      number=2, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
+      name='uri', full_name='SchemaPages.SDOReference.uri', index=1,
+      number=2, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
@@ -482,8 +461,8 @@ _SDOREFERENCE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=907,
-  serialized_end=979,
+  serialized_start=845,
+  serialized_end=884,
 )
 
 
@@ -551,16 +530,83 @@ _SDOBASETYPEEXPANDED = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto2',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=887,
+  serialized_end=1183,
+)
+
+
+_SDOBASETYPEEXPANDEDPROPSONLY = _descriptor.Descriptor(
+  name='SDOBaseTypeExpandedPropsOnly',
+  full_name='SchemaPages.SDOBaseTypeExpandedPropsOnly',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
     _descriptor.FieldDescriptor(
-      name='supersededBy', full_name='SchemaPages.SDOBaseTypeExpanded.supersededBy', index=8,
-      number=9, type=9, cpp_type=9, label=1,
+      name='id', full_name='SchemaPages.SDOBaseTypeExpandedPropsOnly.id', index=0,
+      number=1, type=9, cpp_type=9, label=2,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='supersedes', full_name='SchemaPages.SDOBaseTypeExpanded.supersedes', index=9,
-      number=10, type=9, cpp_type=9, label=3,
+      name='termdescriptor', full_name='SchemaPages.SDOBaseTypeExpandedPropsOnly.termdescriptor', index=1,
+      number=2, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='properties', full_name='SchemaPages.SDOBaseTypeExpandedPropsOnly.properties', index=2,
+      number=3, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='expectedTypeFor', full_name='SchemaPages.SDOBaseTypeExpandedPropsOnly.expectedTypeFor', index=3,
+      number=4, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='enumerationMembers', full_name='SchemaPages.SDOBaseTypeExpandedPropsOnly.enumerationMembers', index=4,
+      number=5, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='subs', full_name='SchemaPages.SDOBaseTypeExpandedPropsOnly.subs', index=5,
+      number=6, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='supers', full_name='SchemaPages.SDOBaseTypeExpandedPropsOnly.supers', index=6,
+      number=7, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='termStack', full_name='SchemaPages.SDOBaseTypeExpandedPropsOnly.termStack', index=7,
+      number=8, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -577,8 +623,8 @@ _SDOBASETYPEEXPANDED = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=982,
-  serialized_end=1311,
+  serialized_start=1186,
+  serialized_end=1448,
 )
 
 _SDOTERM.fields_by_name['termType'].enum_type = _TERMTYPE
@@ -586,11 +632,13 @@ _SDOTERM.fields_by_name['superPaths'].message_type = _SUPERPATH
 _SDOBASETYPE.fields_by_name['termdescriptor'].message_type = _SDOTERM
 _SDOPROPERTY.fields_by_name['termdescriptor'].message_type = _SDOTERM
 _SDOENUMERATIONVALUE.fields_by_name['termdescriptor'].message_type = _SDOTERM
-_SDOREFERENCE.fields_by_name['termdescriptor'].message_type = _SDOTERM
 _SDOBASETYPEEXPANDED.fields_by_name['termdescriptor'].message_type = _SDOTERM
 _SDOBASETYPEEXPANDED.fields_by_name['properties'].message_type = _SDOPROPERTY
 _SDOBASETYPEEXPANDED.fields_by_name['expectedTypeFor'].message_type = _SDOPROPERTY
-_SDOBASETYPEEXPANDED.fields_by_name['termStack'].message_type = _SDOBASETYPEEXPANDED
+_SDOBASETYPEEXPANDED.fields_by_name['termStack'].message_type = _SDOBASETYPEEXPANDEDPROPSONLY
+_SDOBASETYPEEXPANDEDPROPSONLY.fields_by_name['termdescriptor'].message_type = _SDOTERM
+_SDOBASETYPEEXPANDEDPROPSONLY.fields_by_name['properties'].message_type = _SDOPROPERTY
+_SDOBASETYPEEXPANDEDPROPSONLY.fields_by_name['expectedTypeFor'].message_type = _SDOPROPERTY
 DESCRIPTOR.message_types_by_name['SuperPath'] = _SUPERPATH
 DESCRIPTOR.message_types_by_name['SDOTerm'] = _SDOTERM
 DESCRIPTOR.message_types_by_name['SDOBaseType'] = _SDOBASETYPE
@@ -598,6 +646,7 @@ DESCRIPTOR.message_types_by_name['SDOProperty'] = _SDOPROPERTY
 DESCRIPTOR.message_types_by_name['SDOEnumerationValue'] = _SDOENUMERATIONVALUE
 DESCRIPTOR.message_types_by_name['SDOReference'] = _SDOREFERENCE
 DESCRIPTOR.message_types_by_name['SDOBaseTypeExpanded'] = _SDOBASETYPEEXPANDED
+DESCRIPTOR.message_types_by_name['SDOBaseTypeExpandedPropsOnly'] = _SDOBASETYPEEXPANDEDPROPSONLY
 DESCRIPTOR.enum_types_by_name['TermType'] = _TERMTYPE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -649,6 +698,13 @@ SDOBaseTypeExpanded = _reflection.GeneratedProtocolMessageType('SDOBaseTypeExpan
   # @@protoc_insertion_point(class_scope:SchemaPages.SDOBaseTypeExpanded)
   })
 _sym_db.RegisterMessage(SDOBaseTypeExpanded)
+
+SDOBaseTypeExpandedPropsOnly = _reflection.GeneratedProtocolMessageType('SDOBaseTypeExpandedPropsOnly', (_message.Message,), {
+  'DESCRIPTOR' : _SDOBASETYPEEXPANDEDPROPSONLY,
+  '__module__' : 'schemapages_pb2'
+  # @@protoc_insertion_point(class_scope:SchemaPages.SDOBaseTypeExpandedPropsOnly)
+  })
+_sym_db.RegisterMessage(SDOBaseTypeExpandedPropsOnly)
 
 
 # @@protoc_insertion_point(module_scope)

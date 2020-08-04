@@ -39,7 +39,7 @@ class SdoTerm():
         self.subs = []
         self.supers = []
         self.supersededBy = ""
-        self.supersedes = []
+        self.supersedes = ""
         self.termStack = []
         
 
