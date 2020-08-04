@@ -18,7 +18,7 @@ SdoTermSource.setQueryGraph(termgraph)
 terms = SdoTermSource.getAllTerms()
 print ("Terms Count: %s" % len(terms))
 
-from schemapagesprotobuf import sdotermToProtobuf, sdotermToProtobufMsg, sdotermProtobufText,protobufToMsg,sdotermToProtobuf
+from schemapagesprotobuf import sdotermToProtobuf, sdotermToProtobufMsg, sdotermToProtobufText, protobufToMsg, protobufToText
 
 import time,datetime
 

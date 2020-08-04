@@ -1,3 +1,4 @@
+from sdoterm import SdoTerm
 import schemapages_pb2
 
 sdotypemap = {
@@ -122,5 +123,5 @@ def protobufToText(buf):
 def sdotermToProtobufMsg(term):
     return protobufToMsg(sdotermToProtobuf(term=term))
 
-def sdotermProtobufText(term):
+def sdotermToProtobufText(term):
     return protobufToText(sdotermToProtobuf(term=term))
